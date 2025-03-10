@@ -1,0 +1,116 @@
+﻿@using Ecommerce_App.ViewModels
+@model RegisterViewModel
+@{
+
+    Layout = "RegisterLayout";
+    ViewBag.Title = "Register";
+}
+
+
+<!-- Section: Register -->
+<section class="text-center text-lg-start">
+    <style>
+        .cascading-right {
+            margin-right: -50px;
+        }
+
+        @@media (max-width: 991.98px) {
+            .cascading-right
+
+        {
+            margin-right: 0;
+        }
+
+        }
+
+        .form-label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+    </style>
+
+    <!-- Container -->
+    <div class="container py-4">
+        <div class="row g-0 align-items-center">
+            <!-- Register Form -->
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="card cascading-right bg-body-tertiary" style="backdrop-filter: blur(30px);">
+                    <div class="card-body p-5 shadow-5">
+                        <!-- Title -->
+                        <h2 class="fw-bold mb-4 text-center">Sign Up</h2>
+
+                        <form asp-action="SaveRegister" method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                            <!-- First Name -->
+                            <div class="mb-4">
+                                <label class="form-label" asp-for="UserName">User Name</label>
+                                <input type="text" asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+
+                            </div>
+                            <!-- Email -->
+                            <div class="mb-4">
+                                <label class="form-label" asp-for="Email">Email Address</label>
+                                <input type="email" asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+
+                            </div>
+
+                            <!-- Password -->
+                            <div class="mb-4">
+                                <label class="form-label" asp-for="Password">Password</label>
+                                <input type="password" asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+
+                            </div>
+                            <!--Confirm Password -->
+                            <div class="mb-4">
+                                <label class="form-label" asp-for="ConfirmPassword">Confirm Password</label>
+                                <input type="password" asp-for="ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary btn-block mb-4 w-100">
+                                Sign up
+                            </button>
+
+                            <!-- Social Media Signup -->
+                            <div class="text-center">
+                                <p>or sign up with:</p>
+                                <button type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fab fa-facebook-f"></i>
+                                </button>
+                                <button type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fab fa-google"></i>
+                                </button>
+                                <button type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fab fa-twitter"></i>
+                                </button>
+                                <button type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fab fa-github"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image -->
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg"
+                     class="w-100 rounded-4 shadow-4" alt="Register image" />
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Section -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
