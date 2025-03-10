@@ -32,7 +32,9 @@ namespace Ecommerce_App
                 option.Password.RequireDigit = false;
                 option.Password.RequireUppercase = false;
             }
-             ).AddEntityFrameworkStores<ApplicationDbContext>();
+             ).AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddRoles<IdentityRole>()  // ===> enable role based authorization
+            .AddDefaultTokenProviders();
 
             // Add UnitOfWork and Repository pattern
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
