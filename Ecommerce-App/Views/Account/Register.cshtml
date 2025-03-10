@@ -11,14 +11,14 @@
 <section class="text-center text-lg-start">
     <style>
         .cascading-right {
-            margin-right: -50px;
+            margin-right: 0;
         }
 
-        @@media (max-width: 991.98px) {
+        @@media (min-width: 992px) {
             .cascading-right
 
         {
-            margin-right: 0;
+            margin-right: -50px;
         }
 
         }
@@ -29,71 +29,99 @@
             margin-bottom: 5px;
             font-weight: 500;
         }
+
+        .card {
+            border-radius: 1rem;
+        }
+
+        .form-control {
+            border-radius: 0.5rem;
+        }
+
+        .btn-primary {
+            border-radius: 0.5rem;
+        }
     </style>
 
-    <!-- Container -->
-    <div class="container py-4">
-        <div class="row g-0 align-items-center">
+    <div class="container py-5">
+        <div class="row g-4 align-items-center justify-content-center">
             <!-- Register Form -->
-            <div class="col-lg-6 mb-5 mb-lg-0">
-                <div class="card cascading-right bg-body-tertiary" style="backdrop-filter: blur(30px);">
-                    <div class="card-body p-5 shadow-5">
-                        <!-- Title -->
+            <div class="col-lg-6">
+                <div class="card cascading-right bg-body-tertiary shadow p-4">
+                    <div class="card-body">
                         <h2 class="fw-bold mb-4 text-center">Sign Up</h2>
 
                         <form asp-action="SaveRegister" method="post">
-                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-                            <!-- First Name -->
-                            <div class="mb-4">
-                                <label class="form-label" asp-for="UserName">User Name</label>
-                                <input type="text" asp-for="UserName" class="form-control" />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            <div class="row">
+                                <!-- First Name -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" asp-for="FirstName">First Name</label>
+                                    <input type="text" asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
 
+                                <!-- Last Name -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" asp-for="LastName">Last Name</label>
+                                    <input type="text" asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+
+                                <!-- User Name -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" asp-for="UserName">User Name</label>
+                                    <input type="text" asp-for="UserName" class="form-control" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+
+                                <!-- Address -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" asp-for="Address">Address</label>
+                                    <input type="text" asp-for="Address" class="form-control" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+
+                                <!-- User Type -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" asp-for="UserType">User Type</label>
+                                    <input type="text" asp-for="UserType" class="form-control" />
+                                    <span asp-validation-for="UserType" class="text-danger"></span>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" asp-for="Email">Email Address</label>
+                                    <input type="email" asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                                <!-- Password -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" asp-for="Password">Password</label>
+                                    <input type="password" asp-for="Password" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <!-- Confirm Password -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" asp-for="ConfirmPassword">Confirm Password</label>
+                                    <input type="password" asp-for="ConfirmPassword" class="form-control" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
                             </div>
-                            <!-- Email -->
-                            <div class="mb-4">
-                                <label class="form-label" asp-for="Email">Email Address</label>
-                                <input type="email" asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
 
-                            </div>
+                            <button type="submit" class="btn btn-primary btn-block mb-4 w-100">Sign up</button>
 
-                            <!-- Password -->
-                            <div class="mb-4">
-                                <label class="form-label" asp-for="Password">Password</label>
-                                <input type="password" asp-for="Password" class="form-control" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
-
-                            </div>
-                            <!--Confirm Password -->
-                            <div class="mb-4">
-                                <label class="form-label" asp-for="ConfirmPassword">Confirm Password</label>
-                                <input type="password" asp-for="ConfirmPassword" class="form-control" />
-                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary btn-block mb-4 w-100">
-                                Sign up
-                            </button>
-
-                            <!-- Social Media Signup -->
                             <div class="text-center">
                                 <p>or sign up with:</p>
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-facebook-f"></i>
-                                </button>
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-google"></i>
-                                </button>
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-twitter"></i>
-                                </button>
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-github"></i>
-                                </button>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button type="button" class="btn btn-link btn-floating"><i class="fab fa-facebook-f"></i></button>
+                                    <button type="button" class="btn btn-link btn-floating"><i class="fab fa-google"></i></button>
+                                    <button type="button" class="btn btn-link btn-floating"><i class="fab fa-twitter"></i></button>
+                                    <button type="button" class="btn btn-link btn-floating"><i class="fab fa-github"></i></button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -101,14 +129,14 @@
             </div>
 
             <!-- Image -->
-            <div class="col-lg-6 mb-5 mb-lg-0">
+            <div class="col-lg-6 text-center">
                 <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg"
-                     class="w-100 rounded-4 shadow-4" alt="Register image" />
+                     class="w-100 rounded-4 shadow" alt="Register image" />
             </div>
         </div>
     </div>
 </section>
-<!-- End Section -->
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

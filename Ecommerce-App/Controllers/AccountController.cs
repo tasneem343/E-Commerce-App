@@ -33,8 +33,13 @@ namespace Ecommerce_App.Controllers
             {
                 ApplicationUser user = new ApplicationUser();
                 user.UserName = register.UserName;
+                user.FullName = register.FirstName+" "+register.LastName;
                 user.Email = register.Email;
                 user.PasswordHash = register.Password;
+                user.Address = register.Address;
+                user.UserType = register.UserType;
+                
+                
                 
 
                 //save database
@@ -46,11 +51,11 @@ namespace Ecommerce_App.Controllers
                 if (result.Succeeded)
                 {
                     //assign role 
-                    var roleResult = await Manager.AddToRoleAsync(user, "Admin");
+                    IdentityResult roleResult = await Manager.AddToRoleAsync(user, "Admin");
                     if (roleResult.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, false);
-                        return RedirectToAction("SignOut");
+                        return RedirectToAction("Index","Home");
                     }
                     foreach (var error in roleResult.Errors)
                     {
@@ -70,7 +75,8 @@ namespace Ecommerce_App.Controllers
         {
             return View("Login");
         }
-
+        
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -88,10 +94,11 @@ namespace Ecommerce_App.Controllers
                     if (found == true)
                     {
                         List<Claim> Claims = new List<Claim>();
-                        Claims.Add(new Claim("UserAddress", appUser.Address));
                         Claims.Add(new Claim("Email", appUser.Email));
-                        Claims.Add(new Claim("UserType", appUser.UserType));
                         Claims.Add(new Claim("FullName", appUser.FullName));
+                        Claims.Add(new Claim("Address", appUser.Address));
+                        Claims.Add(new Claim("UserType", appUser.UserType));
+
 
                         await SignInManager.SignInWithClaimsAsync(appUser, userViewModel.RememberMe, Claims);
                         return RedirectToAction("Index", "Home");
