@@ -1,0 +1,53 @@
+﻿@using Ecommerce_App.ViewModels
+@model GetOrUpdateProductViewModel
+@{
+    Layout = "RegisterLayout";
+}
+
+<div class="container my-5">
+    <div class="card shadow-lg rounded-4 overflow-hidden border-0" style="max-width: 850px; margin: auto;">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <img src="/Images/@Model.ImageUrl" class="img-fluid h-100 w-100 object-fit-cover" alt="@Model.Name" style="object-fit: cover;">
+            </div>
+            <div class="col-md-6 p-4">
+                <div class="card-body">
+                    <h2 class="card-title text-uppercase fw-bold mb-4 text-center border-bottom pb-2">@Model.Name</h2>
+
+                    <div class="mb-3">
+                        <h6 class="fw-semibold mb-1 text-muted">💲 Price</h6>
+                        <span class="text-primary h5">$@Model.Price</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="fw-semibold mb-1 text-muted">📝 Description</h6>
+                        <p class="text-muted small" style="line-height: 1.7;">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="fw-semibold mb-1 text-muted">📂 Category Name</h6>
+                        <span>@Model.CategoryName</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="fw-semibold mb-1 text-muted">📦 Stock Available</h6>
+                        <span>@Model.Stock</span>
+                    </div>
+
+                    <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                        <input type="hidden" name="productId" value="@Model.ProductId" />
+                        <input type="hidden" name="quantity" value="1" />
+                        <button type="submit" class="btn btn-dark btn-lg w-100 rounded-3">
+                            🛒 Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

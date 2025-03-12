@@ -1,5 +1,9 @@
+using BusinessLogicLayer.Contracts;
+using BusinessLogicLayer.Managers;
+using BusinessLogicLayer.Services;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entities;
+using DataAccessLayer.Repositories.Generic;
 using DataAccessLayer.Repositories.IUnitWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +42,15 @@ namespace Ecommerce_App
 
             // Add UnitOfWork and Repository pattern
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IProductManager, ProductManager>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+            builder.Services.AddScoped<IFileservice, FileServices>();
+            builder.Services.AddScoped<ICategoryManager,CategoryManager>();
+            builder.Services.AddScoped<ICartItemManager,CartItemManager>();
+            builder.Services.AddScoped<IShoppingCartManager,ShoppingCartManager>();
+           
+
 
             builder.Services.AddControllersWithViews(); 
         

@@ -1,0 +1,19 @@
+﻿using DataAccessLayer.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataAccessLayer.Repositories.Generic
+{
+    public interface IProductRepository
+    {
+        public Task<List<Product>> GetAllPhones();
+        public Task<List<Product>> GetAllWatches();
+        public Task<string> GetCategoryByid(int id);
+
+
+    }
+}

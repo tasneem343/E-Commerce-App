@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Ecommerce_App.Controllers
 {
-
+    [Authorize(Roles ="Admin")]
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;

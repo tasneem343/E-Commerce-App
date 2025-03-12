@@ -13,6 +13,8 @@ namespace DataAccessLayer.Repositories.IUnitWork
         IGenericRepository<Product> Products { get; }
         IGenericRepository<Category> Categories { get; }
         IGenericRepository<Order> Orders { get; }
+         IGenericRepository<CartItem> CartItem { get; }
+
         IGenericRepository<OrderItem> OrderItems { get; }
         IGenericRepository<ShoppingCart> ShoppingCarts { get; }
         Task<int> CompleteAsync(); // To save changes to the DB

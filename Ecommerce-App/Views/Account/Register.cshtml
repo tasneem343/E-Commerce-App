@@ -86,7 +86,11 @@
                                 <!-- User Type -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" asp-for="UserType">User Type</label>
-                                    <input type="text" asp-for="UserType" class="form-control" />
+                                    <select asp-for="UserType" class="form-control">
+                                        <option value="">-- Select User Type --</option>
+                                        <option value="Customer">Customer</option>
+                                        <option value="Buyer">Buyer</option>
+                                    </select>
                                     <span asp-validation-for="UserType" class="text-danger"></span>
                                 </div>
 

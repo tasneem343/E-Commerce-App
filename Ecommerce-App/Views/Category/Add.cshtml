@@ -1,0 +1,30 @@
+﻿@using Ecommerce_App.ActionRequests
+
+
+@model CreateCategoryActionRequest
+@{
+
+    Layout = "RegisterLayout";
+    ViewBag.Title = "Create Category";
+}
+
+
+<h2>Add a New Category</h2>
+
+<form action="/Category/Saveadd" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name">Name: </label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+  
+
+
+
+    <button type="submit" class="btn btn-success">Create Category</button>
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

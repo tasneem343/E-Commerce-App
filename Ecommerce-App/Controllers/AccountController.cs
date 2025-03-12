@@ -50,17 +50,28 @@ namespace Ecommerce_App.Controllers
                 //cookie
                 if (result.Succeeded)
                 {
+                    IdentityResult roleResult;
                     //assign role 
-                    IdentityResult roleResult = await Manager.AddToRoleAsync(user, "Admin");
+                    if (user.UserType == "Customer")
+                    {
+                         roleResult = await Manager.AddToRoleAsync(user, "Customer");
+                    }
+                    else 
+                    {
+                         roleResult = await Manager.AddToRoleAsync(user, "Buyer");
+
+
+                        
+                    }
                     if (roleResult.Succeeded)
-                    {
-                        await SignInManager.SignInAsync(user, false);
-                        return RedirectToAction("Index","Home");
-                    }
-                    foreach (var error in roleResult.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
+                        {
+                            await SignInManager.SignInAsync(user, false);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        foreach (var error in roleResult.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
                 }
                 foreach (var error in result.Errors)
                 {
@@ -79,7 +90,6 @@ namespace Ecommerce_App.Controllers
         
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveLogin(LoginUserViewModel userViewModel)
         {
             if (ModelState.IsValid == true)

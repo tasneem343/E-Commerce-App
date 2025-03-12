@@ -122,7 +122,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.ToTable("CartItems", (string)null);
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entities.Category", b =>
@@ -139,7 +139,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entities.Order", b =>
@@ -167,7 +167,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entities.OrderItem", b =>
@@ -196,7 +196,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entities.Product", b =>
@@ -207,7 +207,7 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -232,7 +232,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entities.ShoppingCart", b =>
@@ -251,7 +251,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ShoppingCarts", (string)null);
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -440,9 +440,7 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("DataAccessLayer.Entities.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
