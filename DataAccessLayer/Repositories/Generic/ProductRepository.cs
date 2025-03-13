@@ -40,5 +40,18 @@ namespace DataAccessLayer.Repositories.Generic
                 .Where(p => productIds.Contains(p.ProductId))
                 .ToListAsync();
         }
+        public async Task<List<Product>> GetAllsearchbyname(string searchTerm = null)
+        {
+            var query = _context.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+                query = query.Where(p => p.Name.ToLower().Contains(searchTerm));
+            }
+
+            return await query.ToListAsync();
+        }
+
     }
 }

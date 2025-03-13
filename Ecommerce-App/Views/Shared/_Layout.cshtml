@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    var searchTerm = Context.Request.Query["searchTerm"].ToString();
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,11 +97,12 @@
     <div class="search-popup">
         <div class="search-popup-container">
 
-            <form role="search" method="get" class="search-form" action="">
-                <input type="search" id="search-form" class="search-field" placeholder="Type and press enter" value="" name="s" />
-                <button type="submit" class="search-submit"><svg class="search"><use xlink:href="#search"></use></svg></button>
+            <form role="search" asp-action="Index" asp-controller="Product" method="get" class="search-form">
+                <input type="search" id="search-form" class="search-field" placeholder="Type and press enter" value="@searchTerm" name="searchTerm" />
+                <button type="submit" class="search-submit">
+                    <svg class="search"><use xlink:href="#search"></use></svg>
+                </button>
             </form>
-
             <h5 class="cat-list-title">Browse Categories</h5>
 
             <ul class="cat-list">

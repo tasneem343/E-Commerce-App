@@ -1,0 +1,53 @@
+﻿@using BusinessLogicLayer.DTOs.Product
+@model List<GetorUpdateproductDTO>
+
+@{
+    Layout = "RegisterLayout";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Product List</h2>
+    <p class="text-muted">Total Products: <strong>@Model?.Count()</strong></p>
+
+    <table class="table table-bordered table-hover text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Price (USD)</th>
+                <th>Stock</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td>@product.Description</td>
+                        <td>@product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</td>
+                        <td>@product.Stock</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@Url.Content("~/Images/" + product.ImageUrl)" alt="@product.Name" width="100" class="img-thumbnail" />
+                            }
+                            else
+                            {
+                                <span class="text-danger">No image</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-danger">No products found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

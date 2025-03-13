@@ -12,7 +12,7 @@ namespace BusinessLogicLayer.Contracts
     public interface IProductManager
     {
       
-            Task<IEnumerable<GetorUpdateproductDTO>> GetAllAsync();
+            Task<List<GetorUpdateproductDTO>> GetAllAsync();
             Task<GetorUpdateproductDTO> GetByIdAsync(int id);
             Task AddAsync(CreateProductDTO product);
             Task UpdateAsync(GetorUpdateproductDTO product);
@@ -21,7 +21,7 @@ namespace BusinessLogicLayer.Contracts
         public  Task<IEnumerable<GetorUpdateproductDTO>> GetAllWatches();
         public Task<string> GetCategoryByid(int id);
         public Task<List<Product>> GetProductsByIdsAsync(List<int> productIds);
-        //Task<IEnumerable<GetorUpdateproductDTO>> SearchProductsAsync(string term);
+        public  Task<List<GetorUpdateproductDTO>> GetAllsearchbyname(string searchTerm = null);
 
 
 
