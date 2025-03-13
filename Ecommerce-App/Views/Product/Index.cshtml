@@ -1,13 +1,35 @@
-﻿@using BusinessLogicLayer.DTOs.Product
-@model List<GetorUpdateproductDTO>
+﻿@using Ecommerce_App.ViewModels
+@model ProductSearchViewModel
 
 @{
     Layout = "RegisterLayout";
 }
+    <form asp-action="Index" method="get" class="row mb-4">
+        <div class="col-md-5">
+            <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by product name..." />
+        </div>
+        <div class="col-md-4">
+            <select name="categoryId" class="form-control">
+                <option value="0">All Categories</option>
+                @foreach (var category in Model.Catgories)
+                {
+                    <option value="@category.CategoryId">
+                        @category.Name
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
+
+
+
 
 <div class="container mt-4">
     <h2 class="text-center mb-4">Product List</h2>
-    <p class="text-muted">Total Products: <strong>@Model?.Count()</strong></p>
+    <p class="text-muted">Total Products: <strong>@Model?.Products.Count()</strong></p>
 
     <table class="table table-bordered table-hover text-center">
         <thead class="table-dark">
@@ -16,19 +38,21 @@
                 <th>Description</th>
                 <th>Price (USD)</th>
                 <th>Stock</th>
+                <th>Category</th>
                 <th>Image</th>
             </tr>
         </thead>
         <tbody>
-            @if (Model != null && Model.Any())
+            @if (Model != null && Model.Products.Any())
             {
-                foreach (var product in Model)
+                foreach (var product in Model.Products)
                 {
                     <tr>
                         <td>@product.Name</td>
                         <td>@product.Description</td>
                         <td>@product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</td>
                         <td>@product.Stock</td>
+                        <td>@product.CategoryName</td>
                         <td>
                             @if (!string.IsNullOrEmpty(product.ImageUrl))
                             {

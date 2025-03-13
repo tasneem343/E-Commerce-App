@@ -21,7 +21,7 @@ namespace BusinessLogicLayer.Contracts
         public  Task<IEnumerable<GetorUpdateproductDTO>> GetAllWatches();
         public Task<string> GetCategoryByid(int id);
         public Task<List<Product>> GetProductsByIdsAsync(List<int> productIds);
-        public  Task<List<GetorUpdateproductDTO>> GetAllsearchbyname(string searchTerm = null);
+        public  Task<List<GetorUpdateproductDTO>> GetAllsearchbyname(string searchTerm = null, int? categoryId = null);
 
 
 

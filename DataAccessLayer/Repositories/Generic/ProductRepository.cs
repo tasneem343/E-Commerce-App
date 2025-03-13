@@ -40,7 +40,7 @@ namespace DataAccessLayer.Repositories.Generic
                 .Where(p => productIds.Contains(p.ProductId))
                 .ToListAsync();
         }
-        public async Task<List<Product>> GetAllsearchbyname(string searchTerm = null)
+        public async Task<List<Product>> GetAllsearchbyname(string searchTerm = null, int? categoryId = null)
         {
             var query = _context.Products.AsQueryable();
 
@@ -48,6 +48,11 @@ namespace DataAccessLayer.Repositories.Generic
             {
                 searchTerm = searchTerm.ToLower();
                 query = query.Where(p => p.Name.ToLower().Contains(searchTerm));
+            }
+
+            if (categoryId != null && categoryId != 0)
+            {
+                query = query.Where(p => p.CategoryId == categoryId);
             }
 
             return await query.ToListAsync();

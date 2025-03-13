@@ -143,9 +143,10 @@ namespace BusinessLogicLayer.Managers
             return await _productRepository.GetProductsByIdsAsync(productIds);
                 
         }
-        public async Task<List<GetorUpdateproductDTO>> GetAllsearchbyname(string searchTerm = null)
+        public async Task<List<GetorUpdateproductDTO>> GetAllsearchbyname(string searchTerm = null, int? categoryId = null)
         {
-            var products = await _productRepository.GetAllsearchbyname(searchTerm);
+            var products = await _productRepository.GetAllsearchbyname(searchTerm, categoryId);
+
             var productdtolist = products.Select(p => new GetorUpdateproductDTO
             {
                 Price = p.Price,
@@ -154,8 +155,8 @@ namespace BusinessLogicLayer.Managers
                 ImageUrl = p.ImageUrl,
                 Name = p.Name,
                 Stock = p.Stock,
+                CategoryName = p.Category?.Name
             }).ToList();
-
 
             return productdtolist;
         }

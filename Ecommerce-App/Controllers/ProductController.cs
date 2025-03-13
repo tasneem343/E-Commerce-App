@@ -25,22 +25,34 @@ namespace Ecommerce_App.Controllers
             _categoryManager = categoryManager;
 
         }
-        public async Task< IActionResult> Index(string searchTerm)
+        public async Task<IActionResult> Index(string searchTerm, int categoryId)
         {
+            var categories = await _categoryManager.GetAllAsync();
+
             List<GetorUpdateproductDTO> products;
 
-            if (!string.IsNullOrWhiteSpace(searchTerm))
+            if (!string.IsNullOrWhiteSpace(searchTerm) || categoryId != null)
             {
-                products = await _productManager.GetAllsearchbyname(searchTerm);
+                products = await _productManager.GetAllsearchbyname(searchTerm, categoryId);
             }
             else
             {
                 products = await _productManager.GetAllAsync();
             }
 
-            return View(products);
-        }
+            var viewModel = new ProductSearchViewModel
+            {
+                Products = products,
+                SearchTerm = searchTerm,
+                SelectedCategoryId = categoryId,
+                Catgories = categories.ToList()
+            };
+
         
+
+            return View(viewModel);
+        }
+
         public async Task<IActionResult> ShowAllPhones()
         {
 
