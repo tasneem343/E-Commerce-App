@@ -34,5 +34,11 @@ namespace DataAccessLayer.Repositories.Generic
             var result = await _context.Products.Include(a => a.Category).FirstOrDefaultAsync(p => p.ProductId==id);
             return result.Category.Name;
         }
+        public async Task<List<Product>> GetProductsByIdsAsync(List<int> productIds)
+        {
+            return await _context.Products
+                .Where(p => productIds.Contains(p.ProductId))
+                .ToListAsync();
+        }
     }
 }

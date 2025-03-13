@@ -13,6 +13,8 @@ namespace DataAccessLayer.Repositories.Generic
         public Task<List<Product>> GetAllPhones();
         public Task<List<Product>> GetAllWatches();
         public Task<string> GetCategoryByid(int id);
+        public Task<List<Product>> GetProductsByIdsAsync(List<int> productIds);
+        
 
 
     }

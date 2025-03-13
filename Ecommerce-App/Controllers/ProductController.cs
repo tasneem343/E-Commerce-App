@@ -94,6 +94,7 @@ namespace Ecommerce_App.Controllers
                 ImageUrl = product.ImageUrl,
                 Stock = product.Stock,
                 CategoryId = product.CategoryId,
+                ProductId=product.ProductId,
                 CategoryName = await _productManager.GetCategoryByid(id)
 
 
@@ -104,6 +105,17 @@ namespace Ecommerce_App.Controllers
            
 
         }
+        //public async Task<IActionResult> Search(string term)
+        //{
+        //    if (string.IsNullOrWhiteSpace(term))
+        //    {
+        //        // ممكن نرجع كل المنتجات أو نرجع View فاضي حسب ما تفضلي
+        //        return View(new List<GetOrUpdateProductViewModel>());
+        //    }
+
+        //    var products = await _productManager.SearchProductsAsync(term); // هنجهز الدالة دي تحت في الـ Manager
+        //    return View(products); // عرض النتائج في View
+        //}
 
 
     }

@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.DTOs.Product;
 using DataAccessLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,9 @@ namespace BusinessLogicLayer.Contracts
         public  Task<IEnumerable<GetorUpdateproductDTO>> GetAllPhones();
         public  Task<IEnumerable<GetorUpdateproductDTO>> GetAllWatches();
         public Task<string> GetCategoryByid(int id);
+        public Task<List<Product>> GetProductsByIdsAsync(List<int> productIds);
+        //Task<IEnumerable<GetorUpdateproductDTO>> SearchProductsAsync(string term);
+
 
 
 

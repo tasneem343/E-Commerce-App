@@ -138,6 +138,26 @@ namespace BusinessLogicLayer.Managers
                 await _unitOfWork.CompleteAsync();
             }
         }
+        public async Task<List<Product>> GetProductsByIdsAsync(List<int> productIds)
+        {
+            return await _productRepository.GetProductsByIdsAsync(productIds);
+                
+        }
+        //public async Task<IEnumerable<GetorUpdateproductDTO>> SearchProductsAsync(string term)
+        //{
+        //    var products = await _unitOfWork.Products
+        //        .GetAllAsync(p => p.Name.Contains(term) || p.Description.Contains(term));
+
+        //    return products.Select(p => new GetorUpdateproductDTO
+        //    {
+        //        ProductId = p.ProductId,
+        //        Name = p.Name,
+        //        Price = p.Price,
+        //        ImageUrl = p.ImageUrl,
+        //        CategoryName = p.Category.Name,
+        //        Stock = p.Stock
+        //    });
+        //}
     }
 
 }
