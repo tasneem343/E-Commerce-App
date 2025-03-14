@@ -1,14 +1,11 @@
 ﻿using BusinessLogicLayer.Contracts;
 using BusinessLogicLayer.DTOs.Product;
-using BusinessLogicLayer.Managers;
-using BusinessLogicLayer.Services;
-using DataAccessLayer.Entities;
-using DataAccessLayer.Repositories.Generic;
+
 using Ecommerce_App.ActionRequests;
 using Ecommerce_App.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+
 
 namespace Ecommerce_App.Controllers
 {
@@ -52,7 +49,11 @@ namespace Ecommerce_App.Controllers
 
             return View(viewModel);
         }
-
+        public async Task<IActionResult> ShowAll()
+        {
+            var products = await _productManager.GetAllAsync();
+            return View("ShowAll", products);
+        }
         public async Task<IActionResult> ShowAllPhones()
         {
 
@@ -84,15 +85,35 @@ namespace Ecommerce_App.Controllers
             if (ModelState.IsValid)
             {
                 var uniqueFileName = _fileService.UploadFile(product.Image, "Images");
+                var prod =await _productManager.GetAllsearchbyname(product.Name);
+                foreach(var p in prod)
+                {
 
+                    if (p.Name.ToLower() == product.Name.ToLower())
+                    {
+                        if (p.Price == product.Price)
+                        {
+                            
+                            p.Stock += 1;
+                            await _productManager.UpdateAsync(p);
+                        }
+                        else
+                        {
+                            p.Price = product.Price;
+                            p.Stock += 1;
 
+                            await _productManager.UpdateAsync(p);
+                        }
+                    }
+                    return RedirectToAction(nameof(Index), controllerName: "Home");
+                }
                 var productDto = new CreateProductDTO
                 {
                     Name = product.Name,
                     Price = product.Price,
                     Description = product.Description,
                     ImageUrl = uniqueFileName,
-                    Stock = +1,
+                    Stock = 1,
                     CategoryId = product.CategoryId
 
 
@@ -100,10 +121,10 @@ namespace Ecommerce_App.Controllers
                 await _productManager.AddAsync(productDto);
 
 
-                return RedirectToAction(nameof(Add));
+                return RedirectToAction(nameof(Index),controllerName:"Home");
             }
 
-            var departments = await _productManager.GetAllAsync();
+            var products = await _productManager.GetAllAsync();
             return View(product);
         }
         [HttpGet]
@@ -133,7 +154,58 @@ namespace Ecommerce_App.Controllers
            
 
         }
- 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _productManager.DeleteAsync(id);
+            return RedirectToAction(nameof(ShowAll));
+        }
+        [HttpGet]
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var product = await _productManager.GetByIdAsync(id);
+            if (product == null) throw new Exception("Product not found");
+            var productvm = new GetOrUpdateProductViewModel
+            {
+                Price = product.Price,
+                Name = product.Name,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                Stock = product.Stock,
+                CategoryId = product.CategoryId,
+                ProductId = product.ProductId,
+                CategoryName = await _productManager.GetCategoryByid(id)
+            };
+            ViewBag.Categories = await _categoryManager.GetAllAsync();
+            return View("Edit", productvm);
+        }
+        [HttpPost]
+        public async Task<IActionResult> SaveEdit(GetOrUpdateProductViewModel productvm)
+        {
+            var productdto= await _productManager.GetByIdAsync(productvm.ProductId);
+            if (productdto == null) throw new Exception("Product not found");
+            if (ModelState.IsValid)
+            {
+                 productdto = new GetorUpdateproductDTO
+                {
+                    ProductId = productvm.ProductId,
+                    Price = productvm.Price,
+                    Name = productvm.Name,
+                    Description = productvm.Description,
+                    ImageUrl = productvm.ImageUrl,
+                    Stock = productvm.Stock,
+                    CategoryId = productvm.CategoryId,
+                    CategoryName = productvm.CategoryName
+
+                };
+               await _productManager.UpdateAsync(productdto);
+                
+                
+                return RedirectToAction(nameof(ShowAll));
+            }
+            return View("Edit", productvm);
+        }
 
     }
     

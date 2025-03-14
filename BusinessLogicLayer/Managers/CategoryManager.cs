@@ -74,7 +74,6 @@ namespace BusinessLogicLayer.Managers
                     ImageUrl = p.ImageUrl,
                     Stock = p.Stock,
                     ProductId = p.ProductId,
-                    CategoryId = p.CategoryId
 
                 }).ToList()
 

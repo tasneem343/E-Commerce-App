@@ -45,11 +45,14 @@ namespace Ecommerce_App
             builder.Services.AddScoped<IProductManager, ProductManager>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
+
             builder.Services.AddScoped<IFileservice, FileServices>();
             builder.Services.AddScoped<ICategoryManager,CategoryManager>();
             builder.Services.AddScoped<ICartItemManager,CartItemManager>();
             builder.Services.AddScoped<IShoppingCartManager,ShoppingCartManager>();
-           
+            builder.Services.AddScoped<IOrderManager, OrderManager>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 
 
             builder.Services.AddControllersWithViews(); 

@@ -1,32 +1,89 @@
 ﻿@using BusinessLogicLayer.DTOs.Product
 @model List<GetorUpdateproductDTO>
 @{
-    Layout = "_Layout";
+    Layout = "RegisterLayout";
+    ViewData["Title"] = "All Products";
 }
-@section ShowAll{
 
-    @foreach (var product in Model)
-    {
-        <div class="swiper-slide">
-            <div class="product-card position-relative">
-                <div class="image-holder">
-                    <img src="~/Images/@product.ImageUrl" alt="product-item" class="img-fluid">
-                </div>
-                <div class="cart-concern position-absolute">
-                    <div class="cart-button d-flex">
-                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                    </div>
-                </div>
-                <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                    <h3 class="card-title text-uppercase">
-                        <a href="#">@product.Name</a>
-                    </h3>
-                    <span class="item-price text-primary">$@product.Price</span>
-                </div>
-            </div>
-        </div>
-    }    
-}
+<style>
+    .btn-edit {
+        background-color:lightpink ;
+        color:black; 
+        border: 1px solid #F8BBD0;
+    }
+
+        .btn-edit:hover {
+            background-color:lavenderblush;
+        }
+
+    .btn-details {
+        background-color:paleturquoise ;
+        color: black;
+        border: 1px solid #BBDEFB;
+    }
+
+        .btn-details:hover {
+            background-color: #BBDEFB;
+        }
+
+    .btn-delete {
+        background-color:  lightskyblue; 
+        color: black;
+        border: 1px solid;
+    }
+
+        .btn-delete:hover {
+            background-color: aliceblue;
+        }
+</style>
+<h2 class="mb-4">All Products</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            int count = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@count</td>
+                    <td>
+                        <img src="/Images/@item.ImageUrl" alt="@item.Name" width="80" height="80" />
+                    </td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</td>
+                    <td>@item.Stock</td>
+                    <td>@item.CategoryName</td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-edit">Edit</a>
+                        <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-details">Details</a>
+                        <a asp-action="Delete" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-delete">Delete</a>
+                    </td>
+                </tr>
+                count++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center">No products found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 
 

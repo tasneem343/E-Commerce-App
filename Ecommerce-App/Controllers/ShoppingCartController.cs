@@ -3,12 +3,10 @@ using DataAccessLayer.Entities;
 using Ecommerce_App.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using System.Text.Json;
 namespace Ecommerce_App.Controllers
-{ [Authorize]  // تأكد إن المستخدم مسجل دخول
-       
+{ [Authorize]
+
 
     public class ShoppingCartController : Controller
     {
@@ -23,34 +21,34 @@ namespace Ecommerce_App.Controllers
         // عرض محتوى السلة
         public async Task<IActionResult> ShowCart()
         {
-                var cart = GetCartFromCookies();
+            var cart = GetCartFromCookies();
 
-                if (cart.CartItems == null || !cart.CartItems.Any())
-                    cart.CartItems = new List<CartItem>();
+            if (cart.CartItems == null || !cart.CartItems.Any())
+                cart.CartItems = new List<CartItem>();
 
-                var productIds = cart.CartItems.Select(i => i.ProductId).ToList();
-                var products = await _productManager.GetProductsByIdsAsync(productIds);
+            var productIds = cart.CartItems.Select(i => i.ProductId).ToList();
+            var products = await _productManager.GetProductsByIdsAsync(productIds);
 
-                var items = cart.CartItems.Select(item =>
+            var items = cart.CartItems.Select(item =>
+            {
+                var product = products.FirstOrDefault(p => p.ProductId == item.ProductId);
+                return new CartItemDetailsViewModel
                 {
-                    var product = products.FirstOrDefault(p => p.ProductId == item.ProductId);
-                    return new CartItemDetailsViewModel
-                    {
-                        ProductId = item.ProductId,
-                        ProductName = product?.Name,
-                        ImageUrl = product?.ImageUrl,
-                        Price = product?.Price ?? 0,
-                        Quantity = item.Quantity
-                    };
-                }).ToList();
-
-                var viewModel = new ShoppingCartViewModel
-                {
-                    CartItems = items
+                    ProductId = item.ProductId,
+                    ProductName = product?.Name,
+                    ImageUrl = product?.ImageUrl,
+                    Price = product?.Price ?? 0,
+                    Quantity = item.Quantity
                 };
+            }).ToList();
 
-                return View(viewModel);
-            
+            var viewModel = new ShoppingCartViewModel
+            {
+                CartItems = items
+            };
+
+            return View(viewModel);
+
 
         }
 
@@ -124,7 +122,7 @@ namespace Ecommerce_App.Controllers
 
 
         // استرجاع الكارت من الكوكيز
-        private ShoppingCart GetCartFromCookies()
+        public  ShoppingCart GetCartFromCookies()
         {
             var cartJson = Request.Cookies["ShoppingCart"];
             if (!string.IsNullOrEmpty(cartJson))
@@ -148,5 +146,5 @@ namespace Ecommerce_App.Controllers
             var cartJson = JsonSerializer.Serialize(cart);
             Response.Cookies.Append("ShoppingCart", cartJson, options);
         }
-    } }
+ }  }    
 

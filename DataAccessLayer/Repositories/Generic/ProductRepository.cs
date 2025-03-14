@@ -18,7 +18,10 @@ namespace DataAccessLayer.Repositories.Generic
             _context = context;
             
         }
-
+        public async Task<List<Product>> GetAllProducts()
+        {
+            return await _context.Products.Include(p => p.Category).ToListAsync();
+        }
         public async Task<List<Product>> GetAllPhones()
         {
            List<Product> result= await _context.Products.Where(p=>p.CategoryId==1).ToListAsync();
@@ -57,6 +60,20 @@ namespace DataAccessLayer.Repositories.Generic
 
             return await query.ToListAsync();
         }
+        public async Task UpdateAsync( Product product)
+        {
+          var prod= await  _context.Products.FirstOrDefaultAsync(p => p.ProductId == product.ProductId);
+            if(prod == null) throw new Exception("Product not found");
+            prod.Name = product.Name;
+            prod.ProductId = product.ProductId;
+            prod.Price = product.Price;
+            prod.Description = product.Description;
+            prod.ImageUrl = product.ImageUrl;
+            prod.Stock = product.Stock;
+            prod.CategoryId = product.CategoryId;
+            await _context.SaveChangesAsync();
+        }
+
 
     }
 }

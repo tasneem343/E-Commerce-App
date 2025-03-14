@@ -16,6 +16,9 @@ namespace DataAccessLayer.Repositories.Generic
         public Task<List<Product>> GetProductsByIdsAsync(List<int> productIds);
         public Task<List<Product>> GetAllsearchbyname(string searchTerm = null, int? categoryId = null);
 
+        public Task<List<Product>> GetAllProducts();
+        public Task UpdateAsync(Product product);
+
 
 
 

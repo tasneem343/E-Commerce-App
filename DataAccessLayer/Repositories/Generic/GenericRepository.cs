@@ -33,6 +33,7 @@ namespace DataAccessLayer.Repositories.Generic
         public async Task UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
+            _context.SaveChanges();
         }
 
         public async Task DeleteAsync(int id)

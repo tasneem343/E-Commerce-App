@@ -1,0 +1,41 @@
+﻿@using DataAccessLayer.Entities
+@model Order
+@{
+    Layout = "RegisterLayout";
+}
+@if (Model.OrderItems != null && Model.OrderItems.Any())
+{
+<h2>OrderDetails</h2>
+<p>OrderNumber @Model.OrderId</p>
+<p>OrderDate: @Model.OrderDate</p>
+<p>Status: @Model.Status</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.Product?.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Quantity</td>
+                <td>@(item.Price * item.Quantity)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p><strong>Total: @Model.TotalAmount</strong></p>
+}
+else
+{
+    <div class="alert alert-info text-center">
+        No items in this order.
+    </div>
+}

@@ -17,7 +17,8 @@ namespace BusinessLogicLayer.Contracts
             Task AddAsync(CreateProductDTO product);
             Task UpdateAsync(GetorUpdateproductDTO product);
             Task DeleteAsync(int id);
-        public  Task<IEnumerable<GetorUpdateproductDTO>> GetAllPhones();
+
+        public Task<IEnumerable<GetorUpdateproductDTO>> GetAllPhones();
         public  Task<IEnumerable<GetorUpdateproductDTO>> GetAllWatches();
         public Task<string> GetCategoryByid(int id);
         public Task<List<Product>> GetProductsByIdsAsync(List<int> productIds);

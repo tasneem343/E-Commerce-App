@@ -98,15 +98,20 @@
 
     <div class="search-popup">
         <div class="search-popup-container">
-           
-           <form asp-action="Index" asp-controller="Product" method="get" class="row mb-4">
-        <div class="col-md-5">
-            <input type="text" name="searchTerm" value="@searchTerm" class="form-control" placeholder="Search by product name..." />
-        </div>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary w-100">Search</button>
-                </div>
-        </form>
+            <div class="container my-4">
+                <h3 class="text-center mb-4">Search Products</h3>
+
+                <form asp-action="Index" asp-controller="Product" method="get" class="row justify-content-center g-3">
+                    <div class="col-md-5">
+                        <input type="text" name="searchTerm" value="@searchTerm" class="form-control" placeholder="Search by product name..." />
+                    </div>
+
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </div>
+                </form>
+            </div>
+
 
         </div>
     </div>
@@ -135,18 +140,13 @@
                                 <a class="nav-link me-4 active" href="#billboard">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link me-4" href="#company-services">Services</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link me-4" href="#mobile-products" >Phones</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link me-4" href="#smart-watches">Watches</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link me-4" href="#yearly-sale">Sale</a>
-                            </li>
-                            @if (User.Identity.IsAuthenticated == true)
+                          
+                            @if (User?.Identity.IsAuthenticated == true)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link me-4"  asp-controller="Account" asp-action="SignOut">Log out</a>
@@ -156,8 +156,13 @@
                                     <li class="nav-item">
                                         <a class="nav-link me-4"  asp-controller="Role" asp-action="AddRole">Add Role</a>
                                     </li>
-                                }
-
+                                    <li class="nav-item">
+                                        <a class="nav-link me-4" asp-controller="Category" asp-action="Add">Add Category</a>
+                                    </li>
+                                }else{
+                                <li class="nav-item">
+                                    <a class="nav-link me-4" href="#latest-blog">Contact</a>
+                                </li>}
                             }
                             else
                             {
@@ -165,21 +170,43 @@
                                     <a class="nav-link me-4" href="#latest-blog">Blog</a>
                                 </li>
                             }
+                            @if (User.Identity.IsAuthenticated == true)
+                            {          
+                                @if (User.IsInRole("Admin") == true || User.IsInRole("Buyer"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link me-4" href="/Product/Add">Add Product</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link me-4" href="/Product/ShowAll">Manage Products</a>
+                                    </li>
+
+                                }
+
+                            }
                             <li class="nav-item dropdown">
                                 <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Pages</a>
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a href="about.html" class="dropdown-item">About</a>
                                     </li>
-                                    <li>
-                                        <a href="/Product/Add" class="dropdown-item">Add Product</a>
-                                    </li>
+
                                     <li>
                                         <a href="shop.html" class="dropdown-item">Shop</a>
                                     </li>
-                                    <li>
-                                        <a href="/ShoppingCart/showCart" class="dropdown-item">Cart</a>
-                                    </li>
+                                    @if (User.Identity.IsAuthenticated == true)
+                                    {
+
+                                        <li>
+                                            <a href="/ShoppingCart/showCart" class="dropdown-item">Cart</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a href="/Account/Login" class="dropdown-item">Cart</a>
+                                        </li>
+                                    }
                                     <li>
                                         <a href="checkout.html" class="dropdown-item">Checkout</a>
                                     </li>
@@ -350,7 +377,8 @@
                         @await Component.InvokeAsync("ProductSlider")
                     </div>      
                  </div>
-                       
+            </div>
+        </div>                       
         <div class="swiper-pagination position-absolute text-center"></div>
     </section>
  
@@ -367,6 +395,8 @@
                 <div class="swiper product-watch-swiper">
                     <div class="swiper-wrapper">
                         @await Component.InvokeAsync("WatchesSlider")
+                </div>
+                </div>
 
             </div>
         </div>

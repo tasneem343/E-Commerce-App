@@ -5,6 +5,7 @@ using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories.Generic;
 using DataAccessLayer.Repositories.IUnitWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,8 +58,11 @@ namespace BusinessLogicLayer.Managers
         
         public async Task<List<GetorUpdateproductDTO>> GetAllAsync()
         {
-                var products=await _unitOfWork.Products.GetAllAsync();
-            var productdtolist= products.Select(p=>new GetorUpdateproductDTO
+                var products=await _productRepository.GetAllProducts();
+
+
+
+            var productdtolist = products.Select(  p => new GetorUpdateproductDTO
             {
                 Price = p.Price,
                 ProductId = p.ProductId,
@@ -66,8 +70,11 @@ namespace BusinessLogicLayer.Managers
                 ImageUrl = p.ImageUrl,
                 Name = p.Name,
                 Stock = p.Stock,
-            }).ToList();
+                CategoryId = p.CategoryId,
+                CategoryName = p.Category.Name
 
+            }).ToList();
+            
             
             return productdtolist;
         }
@@ -82,7 +89,8 @@ namespace BusinessLogicLayer.Managers
                 Description = product.Description,
                 ImageUrl = product.ImageUrl,
                 Name = product.Name,
-                Stock = product.Stock
+                Stock = product.Stock,
+                CategoryId = product.CategoryId,
             };
             return productdto;
 
@@ -116,17 +124,23 @@ namespace BusinessLogicLayer.Managers
 
         public async Task UpdateAsync(GetorUpdateproductDTO product)
         {
-            var prod = new Product
+            var prod=await _unitOfWork.Products.GetByIdAsync(product.ProductId);
+            if (prod == null) throw new Exception("Product not found");
+            prod = new Product
             {
+
+                ProductId = product.ProductId,
                 Price = product.Price,
                 Description = product.Description,
                 ImageUrl = product.ImageUrl,
                 Name = product.Name,
                 Stock = product.Stock,
+                CategoryId = (int)product.CategoryId
+
 
             };
-            _unitOfWork.Products?.UpdateAsync(prod);
-            await _unitOfWork.CompleteAsync();
+           await _productRepository.UpdateAsync(prod);
+           
         }
 
         public async Task DeleteAsync(int id)
@@ -155,11 +169,13 @@ namespace BusinessLogicLayer.Managers
                 ImageUrl = p.ImageUrl,
                 Name = p.Name,
                 Stock = p.Stock,
-                CategoryName = p.Category?.Name
+                CategoryName = p.Category?.Name,
+                CategoryId=p.CategoryId
             }).ToList();
 
             return productdtolist;
         }
+        
 
     }
 }

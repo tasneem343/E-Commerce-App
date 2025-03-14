@@ -16,13 +16,7 @@ namespace Ecommerce_App.Controllers
         {
             _categoryManager = categoryManager;
         }
-        //[HttpGet]
-        //public IActionResult ShowAll()
-        //{
-            
-        //    var category = studentBL.GetAll();//
-        //    return View("ShowAll", StudentListModel);//Moedl List<student>
-        //}
+    
         [Authorize(Roles = "Admin")]
 
         [HttpGet]
