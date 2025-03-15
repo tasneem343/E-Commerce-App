@@ -11,100 +11,146 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
     <style>
         body {
-        background-color: #f4f6f9;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .nav-item, .custom-navbar .nav-item {
+            font-family: 'Jost', sans-serif !important;
         }
 
         .custom-navbar {
-        background-color: #343a40;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            height: 50px;
+            position: static !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1050;
         }
 
-        .custom-navbar a {
-        color: white !important;
-        }
+            .custom-navbar .navbar-brand img {
+                max-height: 36px;
+            }
+
+            .custom-navbar .nav-link {
+                padding-top: 8px;
+                padding-bottom: 8px;
+                color: #999 !important;
+                font-weight: 500;
+                font-size: 14px;
+                font-family: 'Lato', sans-serif;
+                transition: color 0.3s ease, text-decoration 0.3s ease;
+            }
+
+                .custom-navbar .nav-link:hover {
+                    color: #0d6efd !important;
+                }
+
+            .custom-navbar a {
+                color: #999 !important;
+            }
 
         main.container {
-        background-color: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .with-navbar {
+            padding-top: 80px;
         }
 
         footer {
-        background-color: #212529;
-        font-size: 14px;
+            background-color: #212529;
+            font-size: 14px;
         }
 
-        footer a {
-        color: #adb5bd;
-        text-decoration: none;
-        }
+            footer a {
+                color: #adb5bd;
+                text-decoration: none;
+            }
 
-        footer a:hover {
-        color: white;
-        }
+                footer a:hover {
+                    color: white;
+                }
     </style>
 </head>
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg custom-navbar mb-4">
-        <div class="container">
-            <a class="navbar-brand text-white fw-bold" href="/">My Website</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Product">Search</a>
-                    </li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        if (User.IsInRole("Customer"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Order/MyOrders">My Orders</a>
+    <header id="header" class="site-header custom-navbar">
+        <nav id="header-nav" class="navbar navbar-expand-lg px-3">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold" href="/">
+                    <img src="/Images/main-logo.png" class="logo" alt="Logo">
+                </a>
+                <button class="navbar-toggler d-flex d-lg-none order-3 p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel">
+                    <div class="offcanvas-header px-4 pb-0">
+                        <a class="navbar-brand" href="/">
+                            <img src="/Images/main-logo.png" class="logo" alt="Logo">
+                        </a>
+                        <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
+                            <li class="nav-item me-4 ">
+                                <a class="nav-link active" href="/">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/shoppingCart/showcart">Show Cart</a>
+                            <li class="nav-item me-4">
+                                <a class="nav-link" href="/Product">Search</a>
                             </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Order/MyOrders">Orders</a>
-                            </li>
-                        }
-
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Account/Signout">Log Out</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Account/Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Account/Register">Register</a>
-                        </li>
-                    }
-                   
-                </ul>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                if (User.IsInRole("Customer"))
+                                {
+                                    <li class="nav-item me-4">
+                                        <a class="nav-link" href="/Order/MyOrders">My Orders</a>
+                                    </li>
+                                    <li class="nav-item me-4">
+                                        <a class="nav-link" href="/shoppingCart/showcart">
+                                            <i class="fas fa-shopping-cart me-1"></i> MY Cart
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item me-4">
+                                        <a class="nav-link" href="/Order/MyOrders">Orders</a>
+                                    </li>
+                                }
+                                <li class="nav-item me-4">
+                                    <a class="nav-link" href="/Account/Signout">Log Out</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item me-4">
+                                    <a class="nav-link" href="/Account/Login">Login</a>
+                                </li>
+                                <li class="nav-item me-4">
+                                    <a class="nav-link" href="/Account/Register">Register</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <!-- Main Content -->
-    <main class="container my-4">
+    <main class="container with-navbar">
         @RenderBody()
     </main>
 
@@ -123,3 +169,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
