@@ -2,36 +2,82 @@
 @model Order
 @{
     Layout = "RegisterLayout";
+
 }
 @if (Model.OrderItems != null && Model.OrderItems.Any())
 {
-<h2>OrderDetails</h2>
-<p>OrderNumber @Model.OrderId</p>
-<p>OrderDate: @Model.OrderDate</p>
-<p>Status: @Model.Status</p>
+    <h2>OrderDetails</h2>
+    <p>OrderNumber @Model.OrderId</p>
+    <p>OrderDate:  @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+    <p>
+        <strong>Order Status:</strong>
+        <span class="badge text-black ">@Model.Status</span>
+    </p>
+    @if (Model.Status == OrderStatus.Completed)
+    {
+        <p class="text-info mt-2">
+            Your Order Is Expected To Arrive Within 3 To 7 Days.
+    </p>}
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.OrderItems)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@item.Product?.Name</td>
-                <td>@item.Price</td>
-                <td>@item.Quantity</td>
-                <td>@(item.Price * item.Quantity)</td>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.Product?.Name</td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Price * item.Quantity)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (Model.Status != OrderStatus.Completed)
+    {
+        if (User.IsInRole("Admin"))
+        {
+            if (Model.Status == OrderStatus.Pending)
+            {
+                <form asp-action="CancelOrder" asp-route-id="@Model.OrderId" method="post">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Do you Want To Cancel this Order')">
+                        Cancel Order
+                    </button>
+                </form>
+            }
+
         }
-    </tbody>
-</table>
-<p><strong>Total: @Model.TotalAmount</strong></p>
+        if (User.IsInRole("Customer"))
+        {
+          
+            if (Model.Status==OrderStatus.Pending)
+            {
+                <form asp-action="CancelOrder" asp-route-id="@Model.OrderId" method="post">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Do you Want To Cancel this Order')">
+                        Cancel Order
+                    </button>
+                </form>
+                <a class="btn btn-success" asp-action="PayWithStripe" asp-controller="Order" asp-route-id="@Model.OrderId">
+                    Pay Now On Stripe
+                </a>
+            }
+            if (Model.Status == OrderStatus.Canceled)
+            {
+                <div class="alert alert-danger">
+                    Order is Canceled
+                </div>
+            }
+        }
+    }
+    <p><strong>Total: @Model.TotalAmount</strong></p>
 }
 else
 {

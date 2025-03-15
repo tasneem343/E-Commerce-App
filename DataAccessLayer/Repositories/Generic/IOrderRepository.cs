@@ -12,7 +12,8 @@ namespace DataAccessLayer.Repositories.Generic
     {
         public  Task<List<Order>> GetAllOrdersWithDetailsAsync();
         public Task<Order> GetOrderByIdAsync(int orderId);
-
+        public Task<ICollection<Order>> GetUserOrdersAsync(string userId);
+       
 
     }
 }

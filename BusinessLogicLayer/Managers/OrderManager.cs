@@ -74,7 +74,11 @@ namespace BusinessLogicLayer.Managers
             return order.OrderId;
         }
 
-        public async Task<List<Order>> GetUserOrdersAsync(string userId)
+        public async Task<ICollection<Order>> GetUserOrdersAsync(string userId)
+        {
+            return await _orderRepository.GetUserOrdersAsync(userId);
+        }
+        public async Task<ICollection<Order>> GetOrderswithDetails()
         {
             return await _orderRepository.GetAllOrdersWithDetailsAsync();
         }
@@ -100,5 +104,12 @@ namespace BusinessLogicLayer.Managers
 
             return null;
         }
+       public async Task UpdateOrderAsync(Order order)
+        {
+            await _unitOfWork.Orders.UpdateAsync(order);
+             await _unitOfWork.CompleteAsync();
+        }
 
-    } }
+      
+    }
+}

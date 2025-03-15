@@ -8,6 +8,7 @@ using DataAccessLayer.Repositories.IUnitWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Stripe;
 
 namespace Ecommerce_App
 {
@@ -56,7 +57,7 @@ namespace Ecommerce_App
 
 
             builder.Services.AddControllersWithViews(); 
-        
+            
 
         var app = builder.Build();
 
@@ -67,7 +68,7 @@ namespace Ecommerce_App
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            StripeConfiguration.ApiKey = app.Configuration["Stripe:SecretKey"];
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

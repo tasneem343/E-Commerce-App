@@ -1,11 +1,7 @@
 ﻿using DataAccessLayer.Context;
 using DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DataAccessLayer.Repositories.Generic
 {
@@ -25,6 +21,14 @@ namespace DataAccessLayer.Repositories.Generic
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Product)
                 .ToListAsync();
+        }
+        public async Task<ICollection<Order>> GetUserOrdersAsync(string userId)
+        {
+            return  await _context.Orders
+            .Where(o => o.UserId == userId)
+            .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+            .ToListAsync();
         }
         public async Task<Order> GetOrderByIdAsync(int orderId)
         {

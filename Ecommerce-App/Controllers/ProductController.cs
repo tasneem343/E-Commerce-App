@@ -28,7 +28,7 @@ namespace Ecommerce_App.Controllers
 
             List<GetorUpdateproductDTO> products;
 
-            if (!string.IsNullOrWhiteSpace(searchTerm) || categoryId != null)
+            if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 products = await _productManager.GetAllsearchbyname(searchTerm, categoryId);
             }

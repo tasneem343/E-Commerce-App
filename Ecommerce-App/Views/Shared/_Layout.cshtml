@@ -137,7 +137,7 @@
                     <div class="offcanvas-body">
                         <ul id="navbar" class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link me-4 active" href="#billboard">Home</a>
+                                <a class="nav-link me-4 active" >Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link me-4" href="#mobile-products" >Phones</a>
@@ -145,80 +145,94 @@
                             <li class="nav-item">
                                 <a class="nav-link me-4" href="#smart-watches">Watches</a>
                             </li>
-                          
-                            @if (User?.Identity.IsAuthenticated == true)
+
+                            @if (User?.Identity?.IsAuthenticated == true)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link me-4"  asp-controller="Account" asp-action="SignOut">Log out</a>
                                 </li>
-                                @if (User.IsInRole("Admin") == true)
-                                {
-                                    <li class="nav-item">
-                                        <a class="nav-link me-4"  asp-controller="Role" asp-action="AddRole">Add Role</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link me-4" asp-controller="Category" asp-action="Add">Add Category</a>
-                                    </li>
-                                }else{
-                                <li class="nav-item">
-                                    <a class="nav-link me-4" href="#latest-blog">Contact</a>
-                                </li>}
+                                
                             }
                             else
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link me-4" href="#latest-blog">Blog</a>
-                                </li>
+                                @* <li class="nav-item"> *@
+                                @*     <a class="nav-link me-4" href="#latest-blog">Blog</a> *@
+                                @* </li> *@
                             }
-                            @if (User.Identity.IsAuthenticated == true)
+                            @if (User?.Identity?.IsAuthenticated == true)
                             {          
                                 @if (User.IsInRole("Admin") == true || User.IsInRole("Buyer"))
                                 {
-                                    <li class="nav-item">
-                                        <a class="nav-link me-4" href="/Product/Add">Add Product</a>
-                                    </li>
+                                    
                                     <li class="nav-item">
                                         <a class="nav-link me-4" href="/Product/ShowAll">Manage Products</a>
                                     </li>
 
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link me-4" href="/Product/ShowAll">Browse Products</a>
+                                    </li>
                                 }
 
                             }
                             <li class="nav-item dropdown">
                                 <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Pages</a>
                                 <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="about.html" class="dropdown-item">About</a>
-                                    </li>
+                                    @* <li> *@
+                                    @*     <a href="about.html" class="dropdown-item">About</a> *@
+                                    @* </li> *@
 
-                                    <li>
-                                        <a href="shop.html" class="dropdown-item">Shop</a>
-                                    </li>
-                                    @if (User.Identity.IsAuthenticated == true)
+                                    @* <li> *@
+                                    @*     <a href="shop.html" class="dropdown-item">Shop</a> *@
+                                    @* </li> *@
+                                    @if (User?.Identity?.IsAuthenticated == true)
                                     {
+                                        @if (User.IsInRole("Admin") == true)
+                                        {
+                                            <li>
+                                                <a href="Order/OrdersDetails" class="dropdown-item"> Orders</a>
+                                            </li>
+                                            <li>
+                                                <a href="Product/Add" class="dropdown-item"> Add Products</a>
 
-                                        <li>
-                                            <a href="/ShoppingCart/showCart" class="dropdown-item">Cart</a>
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li>
+                                            </li>
+                                            <li>
+                                                <a href="Category/Add" class="dropdown-item"> Add Category</a>
+
+                                            </li>
+                                            
+                                            
+
+                                        }
+                                        if (User.IsInRole("Buyer") == true)
+                                        {
+                                            <li>
+                                                <a href="Order/OrdersDetails" class="dropdown-item"> Orders</a>
+                                            </li>
+                                            <li>
+                                                <a href="Product/Add" class="dropdown-item"> Add Products</a>
+
+                                            </li>
+                                        }
+                                          <li>
                                             <a href="/Account/Login" class="dropdown-item">Cart</a>
                                         </li>
-                                    }
-                                    <li>
-                                        <a href="checkout.html" class="dropdown-item">Checkout</a>
-                                    </li>
-                                    <li>
-                                        <a href="single-post.html" class="dropdown-item">Single Post</a>
-                                    </li>
-                                    <li>
-                                        <a href="single-product.html" class="dropdown-item">Single Product</a>
-                                    </li>
-                                    <li>
-                                        <a href="contact.html" class="dropdown-item">Contact</a>
-                                    </li>
+                                            <li>
+                                                <a href="Order/MyOrders" class="dropdown-item">My Orders</a>
+                                            </li>
+                                   }
+                                   
+                                    @* <li> *@
+                                    @*     <a href="single-post.html" class="dropdown-item">Single Post</a> *@
+                                    @* </li> *@
+                                    @* <li> *@
+                                    @*     <a href="single-product.html" class="dropdown-item">Single Product</a> *@
+                                    @* </li> *@
+                                    @* <li> *@
+                                    @*     <a href="contact.html" class="dropdown-item">Contact</a> *@
+                                    @* </li> *@
                                 </ul>
                             </li>
                             <li class="nav-item">

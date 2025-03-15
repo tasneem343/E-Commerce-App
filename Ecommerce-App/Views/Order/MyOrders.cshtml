@@ -4,15 +4,39 @@
     Layout = "RegisterLayout"; 
 }
 
-<h2>MyOrders</h2>
-
-@foreach (var order in Model)
+<h2>Orders</h2>
+@if (Model.Count == 0)
 {
+    <div class="alert alert-info text-center">
+        No orders found.
+    </div>
+}
+else{
+    if( !User?.Identity?.IsAuthenticated == true)
+    {
+        <div class="alert alert-info text-center">
+            Please Login to Show Your Orders
+        </div>
+    }else
+    {
+    @foreach (var order in Model)
+    {
     <div class="card mb-3 p-3">
         <p><strong>OrderNumber:</strong> @order.OrderId</p>
         <p><strong>OrderDate:</strong> @order.OrderDate</p>
         <p><strong>OrderStatus:</strong> @order.Status</p>
         <p><strong>Total:</strong> @order.TotalAmount</p>
-        <a class="btn btn-info" href="@Url.Action("OrderDetails", "Order", new { id = order.OrderId })">Details</a>
+        @if (User.IsInRole("Admin") || User.IsInRole("Buyer"))
+        {
+                    <a class="btn btn-info" asp-action="singleOrderDetails" asp-route-id="@order.OrderId" asp-controller="Order">Details</a>
+
+        }
+        else
+        {
+                    <a class="btn btn-info" asp-action="singleOrderDetails" asp-controller="Order" asp-route-id="@order.OrderId">Details</a>
+        }
+       
     </div>
+    }
+    }
 }

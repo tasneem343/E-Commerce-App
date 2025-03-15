@@ -1,5 +1,6 @@
 ﻿@using BusinessLogicLayer.DTOs.Product
 @model List<GetorUpdateproductDTO>
+
 @{
     Layout = "RegisterLayout";
     ViewData["Title"] = "All Products";
@@ -7,83 +8,154 @@
 
 <style>
     .btn-edit {
-        background-color:lightpink ;
-        color:black; 
-        border: 1px solid #F8BBD0;
+        background-color: #f8bbd0;
+        color: black;
+        border: none;
+        transition: 0.3s ease-in-out;
     }
 
         .btn-edit:hover {
-            background-color:lavenderblush;
+            background-color: #f48fb1;
+            color: white;
         }
 
     .btn-details {
-        background-color:paleturquoise ;
+        background-color: #b2ebf2;
         color: black;
-        border: 1px solid #BBDEFB;
+        border: none;
+        transition: 0.3s ease-in-out;
     }
 
         .btn-details:hover {
-            background-color: #BBDEFB;
+            background-color: #4dd0e1;
+            color: white;
         }
 
     .btn-delete {
-        background-color:  lightskyblue; 
+        background-color: #81d4fa;
         color: black;
-        border: 1px solid;
+        border: none;
+        transition: 0.3s ease-in-out;
     }
 
         .btn-delete:hover {
-            background-color: aliceblue;
+            background-color: #29b6f6;
+            color: white;
         }
-</style>
-<h2 class="mb-4">All Products</h2>
 
-<table class="table table-bordered table-striped">
-    <thead class="table-dark">
-        <tr>
-            <th>#</th>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Category</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            int count = 1;
-            foreach (var item in Model)
-            {
-                <tr>
-                    <td>@count</td>
-                    <td>
-                        <img src="/Images/@item.ImageUrl" alt="@item.Name" width="80" height="80" />
-                    </td>
-                    <td>@item.Name</td>
-                    <td>@item.Description</td>
-                    <td>@item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</td>
-                    <td>@item.Stock</td>
-                    <td>@item.CategoryName</td>
-                    <td>
+    .btn-add-to-cart {
+        background-color: #c8e6c9;
+        color: black;
+        border: none;
+        transition: 0.3s ease-in-out;
+    }
+
+        .btn-add-to-cart:hover {
+            background-color: #81c784;
+            color: white;
+        }
+
+    h2 {
+        font-weight: bold;
+        color: #444;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .product-card {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+    .card-img-top {
+        width: 100%;
+        object-fit: contain;
+        transition: transform 0.4s ease-in-out;
+        cursor: pointer;
+        background-color: #fff;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .product-card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+
+    .modal-img {
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+<h2>All Products</h2>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card product-card shadow-sm h-100">
+                <img src="/Images/@item.ImageUrl" alt="@item.Name" class="card-img-top" onclick="showImageModal(this)" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Description</p>
+                    <p><strong>Price:</strong> @item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</p>
+                    <p><strong>Stock:</strong> @item.Stock</p>
+                    <p><strong>Category:</strong> @item.CategoryName</p>
+                </div>
+                <div class="card-footer d-flex flex-wrap justify-content-center gap-2">
+                    @if (User.IsInRole("Admin")||User.IsInRole("Buyer"))
+                    {
                         <a asp-action="Edit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-edit">Edit</a>
-                        <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-details">Details</a>
                         <a asp-action="Delete" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-delete">Delete</a>
-                    </td>
-                </tr>
-                count++;
-            }
+                        <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-details">Details</a>
+
+                    }else{
+                   
+                    <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-details">Details</a>
+                        <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="ProductId" value="@item.ProductId" />
+                            <input type="hidden" name="Quantity" value="1" />
+                            <button class="btn btn-sm btn-add-to-cart">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                        </form>
+                    }
+                   
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="" id="modalImage" class="modal-img" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showImageModal(imgElement) {
+            var modalImage = document.getElementById("modalImage");
+            modalImage.src = imgElement.src;
+            var modal = new bootstrap.Modal(document.getElementById('imageModal'));
+            modal.show();
         }
-        else
-        {
-            <tr>
-                <td colspan="8" class="text-center">No products found.</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    </script>
+}
 
 
 

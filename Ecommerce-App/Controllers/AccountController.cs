@@ -105,7 +105,8 @@ namespace Ecommerce_App.Controllers
                     if (found == true)
                     {
                         List<Claim> Claims = new List<Claim>();
-                        Claims.Add(new Claim("Email", appUser.Email));
+                        if(appUser.Email != null)
+                            Claims.Add(new Claim("Email", appUser.Email));
                         Claims.Add(new Claim("FullName", appUser.FullName));
                         Claims.Add(new Claim("Address", appUser.Address));
                         Claims.Add(new Claim("UserType", appUser.UserType));
@@ -122,7 +123,7 @@ namespace Ecommerce_App.Controllers
             return View("Login", userViewModel);
         }
 
-        public async Task<IActionResult> SignOut()
+        public async Task<IActionResult> Signout()
         {
             await SignInManager.SignOutAsync();
             return View("Login");

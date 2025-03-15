@@ -12,8 +12,12 @@ namespace BusinessLogicLayer.Contracts
         Task<int> CreateOrderAsync(string userId, ICollection<CartItem> cartItems);
         Task<string?> ValidateCartItemsAsync(ICollection<CartItem> cartItems);
 
-            Task<List<Order>> GetUserOrdersAsync(string userId);
+            Task<ICollection<Order>> GetUserOrdersAsync(string userId);
             Task<Order?> GetOrderByIdAsync(int orderId);
-        
+        Task UpdateOrderAsync(Order order);
+          Task<ICollection<Order>> GetOrderswithDetails();
+
+
+
     }
 }

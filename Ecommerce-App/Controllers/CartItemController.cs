@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.Contracts;
 using DataAccessLayer.Entities;
+using Ecommerce_App.ActionRequests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce_App.Controllers

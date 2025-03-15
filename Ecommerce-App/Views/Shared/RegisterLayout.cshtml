@@ -13,21 +13,106 @@
 
     <style>
         body {
-            background-color: #f8f9fa;
+        background-color: #f4f6f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .custom-navbar {
+        background-color: #343a40;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .custom-navbar a {
+        color: white !important;
+        }
+
+        main.container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        footer {
+        background-color: #212529;
+        font-size: 14px;
+        }
+
+        footer a {
+        color: #adb5bd;
+        text-decoration: none;
+        }
+
+        footer a:hover {
+        color: white;
         }
     </style>
 </head>
 <body>
-   
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar mb-4">
+        <div class="container">
+            <a class="navbar-brand text-white fw-bold" href="/">My Website</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Product">Search</a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Customer"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Order/MyOrders">My Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/shoppingCart/showcart">Show Cart</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Order/MyOrders">Orders</a>
+                            </li>
+                        }
+
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Account/Signout">Log Out</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Account/Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Account/Register">Register</a>
+                        </li>
+                    }
+                   
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <!-- Main Content -->
-    <main class="container my-5">
+    <main class="container my-4">
         @RenderBody()
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3">
-        &copy; 2025 - My Website
+    <footer class="text-white text-center py-3 mt-5">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 - My Website. All rights reserved.</p>
+        </div>
     </footer>
 
     <!-- Scripts -->
@@ -38,4 +123,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-
