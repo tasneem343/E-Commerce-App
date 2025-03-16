@@ -1,87 +1,105 @@
 ﻿@using DataAccessLayer.Entities
 @model Order
+
 @{
     Layout = "RegisterLayout";
-
 }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 @if (Model.OrderItems != null && Model.OrderItems.Any())
 {
-    <h2>OrderDetails</h2>
-    <p>OrderNumber @Model.OrderId</p>
-    <p>OrderDate:  @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
-    <p>
-        <strong>Order Status:</strong>
-        <span class="badge text-black ">@Model.Status</span>
-    </p>
-    @if (Model.Status == OrderStatus.Completed)
-    {
-        <p class="text-info mt-2">
-            Your Order Is Expected To Arrive Within 3 To 7 Days.
-    </p>}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">
+            <i class="bi bi-receipt-cutoff me-2"></i> Order Details
+        </h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.OrderItems)
-            {
-                <tr>
-                    <td>@item.Product?.Name</td>
-                    <td>@item.Price</td>
-                    <td>@item.Quantity</td>
-                    <td>@(item.Price * item.Quantity)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        <div class="card shadow-sm p-4 mb-4">
+            <p><i class="bi bi-hash me-2 text-primary"></i><strong>Order Number:</strong> #@Model.OrderId</p>
+            <p><i class="bi bi-calendar-event me-2 text-success"></i><strong>Order Date:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+            <p>
+                <i class="bi bi-bar-chart-steps me-2 text-warning"></i>
+                <strong>Order Status:</strong>
+                <span class="badge px-3 py-2 fs-6
+                    @(Model.Status == OrderStatus.Completed ? "bg-success" :
+                      Model.Status == OrderStatus.Canceled ? "bg-danger" : "bg-warning text-dark")">
+                    @Model.Status
+                </span>
+            </p>
+        </div>
 
-    @if (Model.Status != OrderStatus.Completed)
-    {
-        if (User.IsInRole("Admin"))
+        @if (Model.Status == OrderStatus.Completed)
         {
-            if (Model.Status == OrderStatus.Pending)
-            {
-                <form asp-action="CancelOrder" asp-route-id="@Model.OrderId" method="post">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Do you Want To Cancel this Order')">
-                        Cancel Order
-                    </button>
-                </form>
-            }
+            <div class="alert alert-info d-flex align-items-center">
+                <i class="bi bi-truck me-2 fs-5"></i>
+                Your order is expected to arrive within : <strong> 3 to 7 days</strong>.
+            </div>
+        }
 
-        }
-        if (User.IsInRole("Customer"))
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th><i class="bi bi-box-seam"></i> Product</th>
+                        <th><i class="bi bi-currency-dollar"></i> Price</th>
+                        <th><i class="bi bi-stack"></i> Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.Product?.Name</td>
+                            <td>@item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</td>
+                            <td>@item.Quantity</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-end mt-3">
+            <h5><i class="bi bi-cash-coin me-2 text-success"></i><strong>Total:</strong> @Model.TotalAmount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</h5>
+        </div>
+
+        @if (Model.Status != OrderStatus.Completed)
         {
-          
-            if (Model.Status==OrderStatus.Pending)
-            {
-                <form asp-action="CancelOrder" asp-route-id="@Model.OrderId" method="post">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Do you Want To Cancel this Order')">
-                        Cancel Order
-                    </button>
-                </form>
-                <a class="btn btn-success" asp-action="PayWithStripe" asp-controller="Order" asp-route-id="@Model.OrderId">
-                    Pay Now On Stripe
-                </a>
-            }
-            if (Model.Status == OrderStatus.Canceled)
-            {
-                <div class="alert alert-danger">
-                    Order is Canceled
-                </div>
-            }
+            <div class="mt-4 d-flex flex-wrap gap-3">
+                @if (User.IsInRole("Admin") && Model.Status == OrderStatus.Pending)
+                {
+                    <form asp-action="CancelOrder" asp-route-id="@Model.OrderId" method="post">
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="bi bi-x-circle me-1"></i> Cancel Order
+                        </button>
+                    </form>
+                }
+
+                @if (User.IsInRole("Customer"))
+                {
+                    @if (Model.Status == OrderStatus.Pending)
+                    {
+                        <form asp-action="CancelOrder" asp-route-id="@Model.OrderId" method="post">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="bi bi-x-circle me-1"></i> Cancel Order
+                            </button>
+                        </form>
+                        <a class="btn btn-outline-success" asp-action="PayWithStripe" asp-controller="Order" asp-route-id="@Model.OrderId">
+                            <i class="bi bi-credit-card-2-back-fill me-1"></i> Pay Now via Stripe
+                        </a>
+                    }
+                    else if (Model.Status == OrderStatus.Canceled)
+                    {
+                        <div class="alert alert-danger mt-3 d-flex align-items-center">
+                            <i class="bi bi-x-octagon-fill me-2 fs-5"></i> This order has been canceled.
+                        </div>
+                    }
+                }
+            </div>
         }
-    }
-    <p><strong>Total: @Model.TotalAmount</strong></p>
+    </div>
 }
 else
 {
-    <div class="alert alert-info text-center">
-        No items in this order.
+    <div class="alert alert-info text-center mt-5">
+        <i class="bi bi-info-circle-fill me-2"></i> No items in this order.
     </div>
 }

@@ -1,27 +1,33 @@
 ﻿@using Ecommerce_App.ViewModels
 @model GetOrUpdateProductViewModel
+
 @{
     Layout = "RegisterLayout";
 }
 
 <div class="container my-5">
-    <div class="card shadow-lg rounded-4 overflow-hidden border-0" style="max-width: 850px; margin: auto;">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="max-width: 900px; margin: auto;">
         <div class="row g-0">
+            <!-- Product Image -->
             <div class="col-md-6">
-                <img src="/Images/@Model.ImageUrl" class="img-fluid h-100 w-100 object-fit-cover" alt="@Model.Name" style="object-fit: cover;">
+                <img src="/Images/@Model.ImageUrl" class="img-fluid h-100 w-100" alt="@Model.Name" style="object-fit: cover;">
             </div>
-            <div class="col-md-6 p-4">
-                <div class="card-body">
-                    <h2 class="card-title text-uppercase fw-bold mb-4 text-center border-bottom pb-2">@Model.Name</h2>
 
+            <!-- Product Details with Baby Blue Background -->
+            <div class="col-md-6 p-4" style="background-color: #e8f0fe;">
+                <div class="card-body">
+                    <h2 class="card-title text-center fw-bold mb-4 text-primary border-bottom pb-2">@Model.Name</h2>
+
+                    <!-- Price -->
                     <div class="mb-3">
-                        <h6 class="fw-semibold mb-1 text-muted">💲 Price</h6>
-                        <span class="text-primary h5">$@Model.Price</span>
+                        <h6 class="fw-bold text-muted mb-1">💲 Price</h6>
+                        <span class="h5 text-success">$@Model.Price</span>
                     </div>
 
+                    <!-- Description -->
                     <div class="mb-3">
-                        <h6 class="fw-semibold mb-1 text-muted">📝 Description</h6>
-                        <p class="text-muted small" style="line-height: 1.7;">
+                        <h6 class="fw-bold text-muted mb-1">📝 Description</h6>
+                        <p class="text-secondary small" style="line-height: 1.7;">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                             Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
@@ -29,20 +35,23 @@
                         </p>
                     </div>
 
+                    <!-- Category -->
                     <div class="mb-3">
-                        <h6 class="fw-semibold mb-1 text-muted">📂 Category Name</h6>
-                        <span>@Model.CategoryName</span>
+                        <h6 class="fw-bold text-muted mb-1">📂 Category</h6>
+                        <span class="badge bg-info text-dark px-3 py-2 rounded-pill">@Model.CategoryName</span>
                     </div>
 
+                    <!-- Stock -->
                     <div class="mb-4">
-                        <h6 class="fw-semibold mb-1 text-muted">📦 Stock Available</h6>
-                        <span>@Model.Stock</span>
+                        <h6 class="fw-bold text-muted mb-1">📦 Stock Available</h6>
+                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">@Model.Stock</span>
                     </div>
 
+                    <!-- Add to Cart Button -->
                     <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
                         <input type="hidden" name="ProductId" value="@Model.ProductId" />
                         <input type="hidden" name="Quantity" value="1" />
-                        <button type="submit" class="btn btn-dark btn-lg w-100 rounded-3">
+                        <button type="submit" class="btn btn-dark btn-lg w-100 rounded-pill">
                             🛒 Add to Cart
                         </button>
                     </form>
@@ -51,3 +60,4 @@
         </div>
     </div>
 </div>
+

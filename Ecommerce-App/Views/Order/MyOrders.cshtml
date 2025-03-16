@@ -1,42 +1,60 @@
 ﻿@using DataAccessLayer.Entities
 @model List<Order>
+
 @{
-    Layout = "RegisterLayout"; 
+    Layout = "RegisterLayout";
 }
 
-<h2>Orders</h2>
-@if (Model.Count == 0)
-{
-    <div class="alert alert-info text-center">
-        No orders found.
-    </div>
-}
-else{
-    if( !User?.Identity?.IsAuthenticated == true)
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4"><i class="bi bi-bag-check-fill"></i> My Orders</h2>
+
+    @if (Model.Count == 0)
     {
         <div class="alert alert-info text-center">
-            Please Login to Show Your Orders
+            <i class="bi bi-info-circle-fill me-2"></i> No orders found.
         </div>
-    }else
+    }
+    else
     {
-    @foreach (var order in Model)
-    {
-    <div class="card mb-3 p-3">
-        <p><strong>OrderNumber:</strong> @order.OrderId</p>
-        <p><strong>OrderDate:</strong> @order.OrderDate</p>
-        <p><strong>OrderStatus:</strong> @order.Status</p>
-        <p><strong>Total:</strong> @order.TotalAmount</p>
-        @if (User.IsInRole("Admin") || User.IsInRole("Buyer"))
+        if (!User?.Identity?.IsAuthenticated == true)
         {
-                    <a class="btn btn-info" asp-action="singleOrderDetails" asp-route-id="@order.OrderId" asp-controller="Order">Details</a>
-
+            <div class="alert alert-warning text-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> Please login to view your orders.
+            </div>
         }
         else
         {
-                    <a class="btn btn-info" asp-action="singleOrderDetails" asp-controller="Order" asp-route-id="@order.OrderId">Details</a>
+            <div class="row">
+                @foreach (var order in Model)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">
+                                    <i class="bi bi-receipt-cutoff me-2"></i> Order #@order.OrderId
+                                </h5>
+                                <p><i class="bi bi-calendar-event me-2 text-primary"></i><strong>Date:</strong> @order.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+                                <p>
+                                    <i class="bi bi-bar-chart-steps me-2 text-success"></i>
+                                    <strong>Status:</strong>
+                                    <span class="badge bg-primary">@order.Status</span>
+                                </p>
+                                <p><i class="bi bi-currency-dollar me-2 text-warning"></i><strong>Total:</strong> @order.TotalAmount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</p>
+
+                                <a class="btn btn-outline-info w-100 mt-3"
+                                   asp-action="singleOrderDetails"
+                                   asp-controller="Order"
+                                   asp-route-id="@order.OrderId">
+                                    <i class="bi bi-eye-fill me-2"></i> View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         }
-       
-    </div>
     }
-    }
-}
+</div>
+

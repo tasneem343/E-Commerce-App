@@ -151,7 +151,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link me-4"  asp-controller="Account" asp-action="SignOut">Log out</a>
                                 </li>
-                                
+
                             }
                             else
                             {
@@ -163,7 +163,7 @@
                             {          
                                 @if (User.IsInRole("Admin") == true || User.IsInRole("Buyer"))
                                 {
-                                    
+
                                     <li class="nav-item">
                                         <a class="nav-link me-4" href="/Product/ShowAll">Manage Products</a>
                                     </li>
@@ -202,8 +202,9 @@
                                                 <a href="Category/Add" class="dropdown-item"> Add Category</a>
 
                                             </li>
-                                            
-                                            
+
+
+
 
                                         }
                                         if (User.IsInRole("Buyer") == true)
@@ -215,15 +216,26 @@
                                                 <a href="Product/Add" class="dropdown-item"> Add Products</a>
 
                                             </li>
+
                                         }
-                                          <li>
-                                            <a href="/Account/Login" class="dropdown-item">Cart</a>
-                                        </li>
+                                        if (User.IsInRole("Customer") == true)
+                                        {
                                             <li>
-                                                <a href="Order/MyOrders" class="dropdown-item">My Orders</a>
+                                                <a href="/ShoppingCart/Showcart" class="dropdown-item">Cart</a>
                                             </li>
-                                   }
-                                   
+                                            <li>
+                                                <a href="/Order/MyOrders" class="dropdown-item">My Orders</a>
+                                            </li>
+                                        }
+
+
+                                    }  <li>
+                                        <a href="/Account/Login" class="dropdown-item">Cart</a>
+                                    </li>
+                                    <li>
+                                        <a href="Account/Login" class="dropdown-item">My Orders</a>
+                                    </li>
+
                                     @* <li> *@
                                     @*     <a href="single-post.html" class="dropdown-item">Single Post</a> *@
                                     @* </li> *@
@@ -245,20 +257,57 @@
                                                 </svg>
                                             </a>
                                         </li>
-                                        <li class="pe-3">
-                                            <a href="/Account/Login">
-                                                <svg class="user">
-                                                    <use xlink:href="#user"></use>
-                                                </svg>
-                                            </a>
-                                        </li>
+                                        
+                                        @if (User.Identity.IsAuthenticated)
+                                        { if (User.IsInRole("Customer"))
+                                            {
+                                                <li class="pe-3">
+                                                    <a href="/profile/profile">
+                                                        <svg class="user">
+                                                            <use xlink:href="#user"></use>
+                                                        </svg>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/ShoppingCart/showCart">
+                                                        <svg class="cart">
+                                                            <use xlink:href="#cart"></use>
+                                                        </svg>
+                                                    </a>
+                                                </li>
+                                                
+                                            }
+                                            else
+                                            {
+                                               
+                                                <li class="pe-3">
+                                                    <a href="/profile/profile">
+                                                        <svg class="user">
+                                                            <use xlink:href="#user"></use>
+                                                        </svg>
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li class="pe-3">
+                                                <a href="/Account/Login">
+                                                    <svg class="user">
+                                                        <use xlink:href="#user"></use>
+                                                    </svg>
+                                                </a>
+                                            </li>
                                         <li>
-                                            <a href="/ShoppingCart/showCart">
-                                                <svg class="cart">
+                                            <a href="#" >
+                                                <svg class="cart" onclick="alert('Please Login to show cart')">
                                                     <use xlink:href="#cart"></use>
                                                 </svg>
                                             </a>
-                                        </li>
+                                            </li>
+                                       
+                                        }
+                                        
                                     </ul>
                                 </div>
                             </li>

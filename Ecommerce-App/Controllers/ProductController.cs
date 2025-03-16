@@ -166,37 +166,39 @@ namespace Ecommerce_App.Controllers
         {
             var product = await _productManager.GetByIdAsync(id);
             if (product == null) throw new Exception("Product not found");
-            var productvm = new GetOrUpdateProductViewModel
+
+            var ProductAR = new UpdateProductsActionRequest
             {
                 Price = product.Price,
                 Name = product.Name,
                 Description = product.Description,
-                ImageUrl = product.ImageUrl,
+                
                 Stock = product.Stock,
                 CategoryId = product.CategoryId,
                 ProductId = product.ProductId,
                 CategoryName = await _productManager.GetCategoryByid(id)
             };
             ViewBag.Categories = await _categoryManager.GetAllAsync();
-            return View("Edit", productvm);
+            return View("Edit", ProductAR);
         }
         [HttpPost]
-        public async Task<IActionResult> SaveEdit(GetOrUpdateProductViewModel productvm)
+        public async Task<IActionResult> SaveEdit(UpdateProductsActionRequest productFromRequest)
         {
-            var productdto= await _productManager.GetByIdAsync(productvm.ProductId);
+
+            var productdto= await _productManager.GetByIdAsync(productFromRequest.ProductId);
             if (productdto == null) throw new Exception("Product not found");
             if (ModelState.IsValid)
             {
                  productdto = new GetorUpdateproductDTO
                 {
-                    ProductId = productvm.ProductId,
-                    Price = productvm.Price,
-                    Name = productvm.Name,
-                    Description = productvm.Description,
-                    ImageUrl = productvm.ImageUrl,
-                    Stock = productvm.Stock,
-                    CategoryId = productvm.CategoryId,
-                    CategoryName = productvm.CategoryName
+                    ProductId = productFromRequest.ProductId,
+                    Price = productFromRequest.Price,
+                    Name = productFromRequest.Name,
+                    Description = productFromRequest.Description,
+                    ImageUrl = productdto.ImageUrl,
+                    Stock = productFromRequest.Stock,
+                    CategoryId = productFromRequest.CategoryId,
+                    CategoryName = productFromRequest.CategoryName
 
                 };
                await _productManager.UpdateAsync(productdto);
@@ -204,7 +206,8 @@ namespace Ecommerce_App.Controllers
                 
                 return RedirectToAction(nameof(ShowAll));
             }
-            return View("Edit", productvm);
+            
+            return View("Edit", productFromRequest);
         }
 
     }

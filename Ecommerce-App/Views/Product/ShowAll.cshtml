@@ -7,11 +7,33 @@
 }
 
 <style>
+    body {
+        background-color: #e3f2fd; /* خلفية سماوي ناعم */
+    }
+
+    h2 {
+        font-weight: bold;
+        color: #1565c0;
+        text-align: center;
+        margin: 30px 0;
+        position: relative;
+    }
+
+        h2::before {
+            content: "🛍️ ";
+        }
+
+    .btn-edit, .btn-details, .btn-delete, .btn-add-to-cart {
+        border: none;
+        border-radius: 20px;
+        font-weight: 500;
+        padding: 6px 12px;
+        transition: 0.3s ease-in-out;
+    }
+
     .btn-edit {
         background-color: #f8bbd0;
         color: black;
-        border: none;
-        transition: 0.3s ease-in-out;
     }
 
         .btn-edit:hover {
@@ -22,8 +44,6 @@
     .btn-details {
         background-color: #b2ebf2;
         color: black;
-        border: none;
-        transition: 0.3s ease-in-out;
     }
 
         .btn-details:hover {
@@ -34,8 +54,6 @@
     .btn-delete {
         background-color: #81d4fa;
         color: black;
-        border: none;
-        transition: 0.3s ease-in-out;
     }
 
         .btn-delete:hover {
@@ -46,8 +64,6 @@
     .btn-add-to-cart {
         background-color: #c8e6c9;
         color: black;
-        border: none;
-        transition: 0.3s ease-in-out;
     }
 
         .btn-add-to-cart:hover {
@@ -55,38 +71,51 @@
             color: white;
         }
 
-    h2 {
-        font-weight: bold;
-        color: #444;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
     .product-card {
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden; /* ✅ يمنع خروج الصورة خارج حدود الكارد */
     }
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
         }
 
     .card-img-top {
         width: 100%;
+        height: 200px;
         object-fit: contain;
-        transition: transform 0.4s ease-in-out;
-        cursor: pointer;
+        border-radius: 16px 16px 0 0;
         background-color: #fff;
         padding: 10px;
         border-bottom: 1px solid #ddd;
-        border-radius: 12px 12px 0 0;
+        transition: transform 0.4s ease-in-out;
     }
 
     .product-card:hover .card-img-top {
-        transform: scale(1.05);
+        transform: scale(1.03);
+    }
+
+    .card-body {
+        padding: 20px;
+        font-size: 15px;
+    }
+
+    .card-title {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card-text {
+        color: #555;
+    }
+
+    .card-footer {
+        background-color: transparent;
+        border-top: none;
     }
 
     .modal-img {
@@ -97,45 +126,46 @@
 
 <h2>All Products</h2>
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-    @foreach (var item in Model)
-    {
-        <div class="col">
-            <div class="card product-card shadow-sm h-100">
-                <img src="/Images/@item.ImageUrl" alt="@item.Name" class="card-img-top" onclick="showImageModal(this)" />
-                <div class="card-body">
-                    <h5 class="card-title">@item.Name</h5>
-                    <p class="card-text">@item.Description</p>
-                    <p><strong>Price:</strong> @item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</p>
-                    <p><strong>Stock:</strong> @item.Stock</p>
-                    <p><strong>Category:</strong> @item.CategoryName</p>
-                </div>
-                <div class="card-footer d-flex flex-wrap justify-content-center gap-2">
-                    @if (User.IsInRole("Admin")||User.IsInRole("Buyer"))
-                    {
-                        <a asp-action="Edit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-edit">Edit</a>
-                        <a asp-action="Delete" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-delete">Delete</a>
-                        <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-details">Details</a>
-
-                    }else{
-                   
-                    <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-details">Details</a>
-                        <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
-                            <input type="hidden" name="ProductId" value="@item.ProductId" />
-                            <input type="hidden" name="Quantity" value="1" />
-                            <button class="btn btn-sm btn-add-to-cart">
-                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
-                            </button>
-                        </form>
-                    }
-                   
+<div class="container pb-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card product-card h-100">
+                    <img src="~/Images/@item.ImageUrl" alt="@item.Name" class="card-img-top" onclick="showImageModal(this)" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.Description</p>
+                        <p><strong>💵 Price:</strong> @item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</p>
+                        <p><strong>📦 Stock:</strong> @item.Stock</p>
+                        <p><strong>📁 Category:</strong> @item.CategoryName</p>
+                    </div>
+                    <div class="card-footer d-flex flex-wrap justify-content-center gap-2">
+                        @if (User.IsInRole("Admin") || User.IsInRole("Buyer"))
+                        {
+                            <a asp-action="Edit" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-edit">Edit</a>
+                            <a asp-action="Delete" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-delete">Delete</a>
+                            <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-details">Details</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId" class="btn btn-sm btn-details">Details</a>
+                            <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                                <input type="hidden" name="ProductId" value="@item.ProductId" />
+                                <input type="hidden" name="Quantity" value="1" />
+                                <button class="btn btn-sm btn-add-to-cart">
+                                    <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                                </button>
+                            </form>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
 
-<!-- Modal -->
+<!-- Image Modal -->
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -156,9 +186,3 @@
         }
     </script>
 }
-
-
-
-
-
-
