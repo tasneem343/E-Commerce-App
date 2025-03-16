@@ -324,14 +324,16 @@
                     <div class="container">
                         <div class="row d-flex align-items-center">
                             <div class="col-md-6">
-                                <div class="banner-content">
-                                    <h1 class="display-2 text-uppercase text-dark pb-5">Your Products Are Great.</h1>
-                                    <a href="shop.html" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
+                                <div class="banner-content" >
+                                    <h1 class="display-2 text-uppercase text-dark pb-5">
+                                        Find what you love
+                                    </h1>
+                                    <a href="/product/showall" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
                                 </div>
                             </div>
                             <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="/Images/banner-image.png" alt="banner">
+                                <div class="image-holder"  style="margin-top:40px;margin-left:-40px;" >
+                                    <img src="/Images/smartphone_cyan_resized_smaller_centered (1).png" alt="banner">
                                 </div>
                             </div>
                         </div>
@@ -342,13 +344,13 @@
                         <div class="row d-flex flex-wrap align-items-center">
                             <div class="col-md-6">
                                 <div class="banner-content">
-                                    <h1 class="display-2 text-uppercase text-dark pb-5">Technology Hack You Won't Get</h1>
-                                    <a href="shop.html" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
+                                    <h1 class="display-2 text-uppercase text-dark pb-5">Love what you buy</h1>
+                                    <a href="/product/showall" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
                                 </div>
                             </div>
                             <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="/Images/banner-image.png" alt="banner">
+                                <div class="image-holder" style="margin-left:-120px;">
+                                    <img src="/Images/resized_smartwatch_657x677_moved_down_adjusted (1).png" alt="banner">
                                 </div>
                             </div>
                         </div>
@@ -431,7 +433,7 @@
                 <div class="display-header d-flex justify-content-between pb-3">
                     <h2 class="display-7 text-dark text-uppercase">Mobile Products</h2>
                     <div class="btn-right">
-                        <a href="shop.html" class="btn btn-medium btn-normal text-uppercase">Go to Shop</a>
+                        <a href="/product/showall" class="btn btn-medium btn-normal text-uppercase">Go to Shop</a>
                     </div>
                 </div>
                 <div class="swiper product-swiper">
@@ -846,10 +848,26 @@
             </div>
         </div>
     </div>
-    <script src="/js/jquery-1.11.0.min.js"></script>
+    <script src="/js/jquery-1.11.0.min.js">
+       </script>
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="/js/plugins.js"></script>
     <script type="text/javascript" src="/js/script.js"></script>
+   
+        <script>
+            var swiper = new Swiper('.main-swiper', {
+                loop: true,
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false
+                },
+                navigation: {
+                    nextEl: '.swiper-arrow-next',
+                    prevEl: '.swiper-arrow-prev'
+                }
+            });
+        </script>
+    
 </body>
 </html>
