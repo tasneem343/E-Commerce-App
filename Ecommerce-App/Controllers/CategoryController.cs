@@ -1,6 +1,6 @@
 ﻿using BusinessLogicLayer.Contracts;
 using BusinessLogicLayer.DTOs;
-using BusinessLogicLayer.DTOs.Product;
+using BusinessLogicLayer.DTOs.Products;
 using BusinessLogicLayer.Managers;
 using BusinessLogicLayer.Services;
 using Ecommerce_App.ActionRequests;

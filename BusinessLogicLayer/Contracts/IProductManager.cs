@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.DTOs.Product;
+﻿using BusinessLogicLayer.DTOs.Products;
 using DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;

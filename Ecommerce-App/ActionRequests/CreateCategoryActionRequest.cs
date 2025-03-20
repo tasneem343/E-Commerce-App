@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.DTOs.Product;
+﻿using BusinessLogicLayer.DTOs.Products;
 
 namespace Ecommerce_App.ActionRequests
 {

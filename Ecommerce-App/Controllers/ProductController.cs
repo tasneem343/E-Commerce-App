@@ -1,6 +1,5 @@
 ﻿using BusinessLogicLayer.Contracts;
-using BusinessLogicLayer.DTOs.Product;
-
+using BusinessLogicLayer.DTOs.Products;
 using Ecommerce_App.ActionRequests;
 using Ecommerce_App.ViewModels;
 using Microsoft.AspNetCore.Authorization;

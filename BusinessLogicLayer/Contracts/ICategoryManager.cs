@@ -1,6 +1,6 @@
 ﻿using BusinessLogicLayer.DTOs;
 using BusinessLogicLayer.DTOs.Category;
-using BusinessLogicLayer.DTOs.Product;
+using BusinessLogicLayer.DTOs.Products;
 using DataAccessLayer.Entities;
 using System;
 using System.Collections.Generic;

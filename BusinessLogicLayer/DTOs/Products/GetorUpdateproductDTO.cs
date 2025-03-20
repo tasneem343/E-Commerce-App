@@ -5,16 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogicLayer.DTOs.Product
+namespace BusinessLogicLayer.DTOs.Products
 {
-    public class CreateProductDTO
+    public class GetorUpdateproductDTO
     {
+        public int ProductId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string ImageUrl { get; set; }
         public int Stock { get; set; }
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
+        public string? CategoryName { get; set; }
+
 
 
     }

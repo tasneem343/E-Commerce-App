@@ -18,7 +18,6 @@ namespace Ecommerce_App.Controllers
             _productManager = productManager;
         }
 
-        // عرض محتوى السلة
         public async Task<IActionResult> ShowCart()
         {
             var cart = GetCartFromCookies();
@@ -53,7 +52,6 @@ namespace Ecommerce_App.Controllers
         }
 
 
-        // إضافة منتج للسلة
         [HttpPost]
         public IActionResult AddToCart(AddToCartViewModel addToCartView)
         {
@@ -78,7 +76,6 @@ namespace Ecommerce_App.Controllers
             return RedirectToAction("ShowCart");
         }
 
-        // إزالة عنصر من السلة
         public IActionResult RemoveFromCart(int productId)
         {
             var cart = GetCartFromCookies();
@@ -104,7 +101,6 @@ namespace Ecommerce_App.Controllers
 
             if (item != null)
             {
-                // لو الكمية الجديدة أقل من أو تساوي صفر، نحذف العنصر من السلة
                 if (quantity <= 0)
                 {
                     cart.CartItems.Remove(item);
@@ -121,7 +117,6 @@ namespace Ecommerce_App.Controllers
         }
 
 
-        // استرجاع الكارت من الكوكيز
         public  ShoppingCart GetCartFromCookies()
         {
             var cartJson = Request.Cookies["ShoppingCart"];
@@ -133,7 +128,6 @@ namespace Ecommerce_App.Controllers
             return new ShoppingCart();
         }
 
-        // حفظ الكارت في الكوكيز لمدة 30 دقيقة
         private void SaveCartToCookies(ShoppingCart cart)
         {
             var options = new CookieOptions

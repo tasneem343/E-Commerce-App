@@ -1,5 +1,5 @@
 ﻿using BusinessLogicLayer.Contracts;
-using BusinessLogicLayer.DTOs.Product;
+using BusinessLogicLayer.DTOs.Products;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories.Generic;

@@ -49,7 +49,6 @@ namespace Ecommerce_App
 
             builder.Services.AddScoped<IFileservice, FileServices>();
             builder.Services.AddScoped<ICategoryManager,CategoryManager>();
-            builder.Services.AddScoped<ICartItemManager,CartItemManager>();
             builder.Services.AddScoped<IShoppingCartManager,ShoppingCartManager>();
             builder.Services.AddScoped<IOrderManager, OrderManager>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();

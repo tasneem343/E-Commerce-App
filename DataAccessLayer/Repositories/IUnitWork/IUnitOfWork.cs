@@ -17,6 +17,6 @@ namespace DataAccessLayer.Repositories.IUnitWork
 
         IGenericRepository<OrderItem> OrderItems { get; }
         IGenericRepository<ShoppingCart> ShoppingCarts { get; }
-        Task<int> CompleteAsync(); // To save changes to the DB
+        Task<int> CompleteAsync(); //  save changes 
     }
 }

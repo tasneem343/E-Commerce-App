@@ -27,7 +27,6 @@ namespace BusinessLogicLayer.Managers
 
         public async Task<int> CreateOrderAsync(string userId, ICollection<CartItem> cartItems)
         {
-            // التحقق أولاً من توافر الكمية لكل منتج
             foreach (var item in cartItems)
             {
                 var product = await _unitOfWork.Products.GetByIdAsync(item.ProductId);
@@ -38,7 +37,6 @@ namespace BusinessLogicLayer.Managers
                     throw new InvalidOperationException($"The product '{product.Name}' does not have enough stock.");
             }
 
-            // إذا كل المنتجات متاحة نبدأ في إنشاء الطلب
             var order = new Order
             {
                 UserId = userId,
@@ -53,7 +51,6 @@ namespace BusinessLogicLayer.Managers
             {
                 var product = await _unitOfWork.Products.GetByIdAsync(item.ProductId);
 
-                // خصم الكمية
                 product.Stock -= item.Quantity;
 
                 var orderItem = new OrderItem

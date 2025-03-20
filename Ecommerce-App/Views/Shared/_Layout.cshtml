@@ -229,22 +229,16 @@
                                         }
 
 
-                                    }  <li>
-                                        <a href="/Account/Login" class="dropdown-item">Cart</a>
-                                    </li>
-                                    <li>
-                                        <a href="Account/Login" class="dropdown-item">My Orders</a>
-                                    </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a href="/Account/Login" class="dropdown-item">Cart</a>
+                                        </li>
+                                        <li>
+                                            <a href="Account/Login" class="dropdown-item">My Orders</a>
+                                    </li>}
 
-                                    @* <li> *@
-                                    @*     <a href="single-post.html" class="dropdown-item">Single Post</a> *@
-                                    @* </li> *@
-                                    @* <li> *@
-                                    @*     <a href="single-product.html" class="dropdown-item">Single Product</a> *@
-                                    @* </li> *@
-                                    @* <li> *@
-                                    @*     <a href="contact.html" class="dropdown-item">Contact</a> *@
-                                    @* </li> *@
                                 </ul>
                             </li>
                             <li class="nav-item">
@@ -859,7 +853,7 @@
             var swiper = new Swiper('.main-swiper', {
                 loop: true,
                 autoplay: {
-                    delay: 2500,
+                    delay: 3000,
                     disableOnInteraction: false
                 },
                 navigation: {
