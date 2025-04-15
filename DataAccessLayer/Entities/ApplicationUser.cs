@@ -13,7 +13,10 @@ namespace DataAccessLayer.Entities
             public string FullName { get; set; }
             public string Address { get; set; }
             public ICollection<Order>? Orders { get; set; }
-        public string UserType { get; set; } // Customer, Buyer, Admin
-        
+        public string UserType { get; set; } 
+
+       
+       
+
     }
 }

@@ -1,0 +1,60 @@
+﻿@using DataAccessLayer.Entities
+@model List<Order>
+
+@{
+    Layout = "RegisterLayout";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4"><i class="bi bi-bag-check-fill"></i> My Orders</h2>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle-fill me-2"></i> No orders found.
+        </div>
+    }
+    else
+    {
+        if (!User?.Identity?.IsAuthenticated == true)
+        {
+            <div class="alert alert-warning text-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> Please login to view your orders.
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var order in Model)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">
+                                    <i class="bi bi-receipt-cutoff me-2"></i> Order #@order.OrderId
+                                </h5>
+                                <p><i class="bi bi-calendar-event me-2 text-primary"></i><strong>Date:</strong> @order.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+                                <p>
+                                    <i class="bi bi-bar-chart-steps me-2 text-success"></i>
+                                    <strong>Status:</strong>
+                                    <span class="badge bg-primary">@order.Status</span>
+                                </p>
+                                <p><i class="bi bi-currency-dollar me-2 text-warning"></i><strong>Total:</strong> @order.TotalAmount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</p>
+
+                                <a class="btn btn-outline-info w-100 mt-3"
+                                   asp-action="singleOrderDetails"
+                                   asp-controller="Order"
+                                   asp-route-id="@order.OrderId">
+                                    <i class="bi bi-eye-fill me-2"></i> View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>
+

@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Context;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories.Generic;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,13 @@ namespace DataAccessLayer.Repositories.IUnitWork
             Orders = new GenericRepository<Order>(_context);
             OrderItems = new GenericRepository<OrderItem>(_context);
             ShoppingCarts = new GenericRepository<ShoppingCart>(_context);
+            CartItem=new GenericRepository<CartItem>(_context);
         }
 
         public IGenericRepository<Product> Products { get; }
         public IGenericRepository<Category> Categories { get; }
         public IGenericRepository<Order> Orders { get; }
+        public IGenericRepository<CartItem> CartItem { get; }
         public IGenericRepository<OrderItem> OrderItems { get; }
         public IGenericRepository<ShoppingCart> ShoppingCarts { get; }
 

@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using DataAccessLayer.Entities
+@{
+    var searchTerm = Context.Request.Query["searchTerm"].ToString();
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Ministore</title>
@@ -18,7 +23,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <!-- script
     ================================================== -->
-    <script src="js/modernizr.js"></script>
+    <script src="/js/modernizr.js"></script>
 </head>
 <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -93,37 +98,20 @@
 
     <div class="search-popup">
         <div class="search-popup-container">
+            <div class="container my-4">
+                <h3 class="text-center mb-4">Search Products</h3>
 
-            <form role="search" method="get" class="search-form" action="">
-                <input type="search" id="search-form" class="search-field" placeholder="Type and press enter" value="" name="s" />
-                <button type="submit" class="search-submit"><svg class="search"><use xlink:href="#search"></use></svg></button>
-            </form>
+                <form asp-action="Index" asp-controller="Product" method="get" class="row justify-content-center g-3">
+                    <div class="col-md-5">
+                        <input type="text" name="searchTerm" value="@searchTerm" class="form-control" placeholder="Search by product name..." />
+                    </div>
 
-            <h5 class="cat-list-title">Browse Categories</h5>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </div>
+                </form>
+            </div>
 
-            <ul class="cat-list">
-                <li class="cat-list-item">
-                    <a href="#" title="Mobile Phones">Mobile Phones</a>
-                </li>
-                <li class="cat-list-item">
-                    <a href="#" title="Smart Watches">Smart Watches</a>
-                </li>
-                <li class="cat-list-item">
-                    <a href="#" title="Headphones">Headphones</a>
-                </li>
-                <li class="cat-list-item">
-                    <a href="#" title="Accessories">Accessories</a>
-                </li>
-                <li class="cat-list-item">
-                    <a href="#" title="Monitors">Monitors</a>
-                </li>
-                <li class="cat-list-item">
-                    <a href="#" title="Speakers">Speakers</a>
-                </li>
-                <li class="cat-list-item">
-                    <a href="#" title="Memory Cards">Memory Cards</a>
-                </li>
-            </ul>
 
         </div>
     </div>
@@ -149,50 +137,108 @@
                     <div class="offcanvas-body">
                         <ul id="navbar" class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link me-4 active" href="#billboard">Home</a>
+                                <a class="nav-link me-4 active" >Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link me-4" href="#company-services">Services</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link me-4" href="#mobile-products">Products</a>
+                                <a class="nav-link me-4" href="#mobile-products" >Phones</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link me-4" href="#smart-watches">Watches</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link me-4" href="#yearly-sale">Sale</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link me-4" href="#latest-blog">Blog</a>
-                            </li>
+
+                            @if (User?.Identity?.IsAuthenticated == true)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link me-4"  asp-controller="Account" asp-action="SignOut">Log out</a>
+                                </li>
+
+                            }
+                            else
+                            {
+                                @* <li class="nav-item"> *@
+                                @*     <a class="nav-link me-4" href="#latest-blog">Blog</a> *@
+                                @* </li> *@
+                            }
+                            @if (User?.Identity?.IsAuthenticated == true)
+                            {          
+                                @if (User.IsInRole("Admin") == true || User.IsInRole("Buyer"))
+                                {
+
+                                    <li class="nav-item">
+                                        <a class="nav-link me-4" href="/Product/ShowAll">Manage Products</a>
+                                    </li>
+
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link me-4" href="/Product/ShowAll">Browse Products</a>
+                                    </li>
+                                }
+
+                            }
                             <li class="nav-item dropdown">
                                 <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Pages</a>
                                 <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="about.html" class="dropdown-item">About</a>
-                                    </li>
-                                    <li>
-                                        <a href="blog.html" class="dropdown-item">Blog</a>
-                                    </li>
-                                    <li>
-                                        <a href="shop.html" class="dropdown-item">Shop</a>
-                                    </li>
-                                    <li>
-                                        <a href="cart.html" class="dropdown-item">Cart</a>
-                                    </li>
-                                    <li>
-                                        <a href="checkout.html" class="dropdown-item">Checkout</a>
-                                    </li>
-                                    <li>
-                                        <a href="single-post.html" class="dropdown-item">Single Post</a>
-                                    </li>
-                                    <li>
-                                        <a href="single-product.html" class="dropdown-item">Single Product</a>
-                                    </li>
-                                    <li>
-                                        <a href="contact.html" class="dropdown-item">Contact</a>
-                                    </li>
+                                    @* <li> *@
+                                    @*     <a href="about.html" class="dropdown-item">About</a> *@
+                                    @* </li> *@
+
+                                    @* <li> *@
+                                    @*     <a href="shop.html" class="dropdown-item">Shop</a> *@
+                                    @* </li> *@
+                                    @if (User?.Identity?.IsAuthenticated == true)
+                                    {
+                                        @if (User.IsInRole("Admin") == true)
+                                        {
+                                            <li>
+                                                <a href="Order/OrdersDetails" class="dropdown-item"> Orders</a>
+                                            </li>
+                                            <li>
+                                                <a href="Product/Add" class="dropdown-item"> Add Products</a>
+
+                                            </li>
+                                            <li>
+                                                <a href="Category/Add" class="dropdown-item"> Add Category</a>
+
+                                            </li>
+
+
+
+
+                                        }
+                                        if (User.IsInRole("Buyer") == true)
+                                        {
+                                            <li>
+                                                <a href="Order/OrdersDetails" class="dropdown-item"> Orders</a>
+                                            </li>
+                                            <li>
+                                                <a href="Product/Add" class="dropdown-item"> Add Products</a>
+
+                                            </li>
+
+                                        }
+                                        if (User.IsInRole("Customer") == true)
+                                        {
+                                            <li>
+                                                <a href="/ShoppingCart/Showcart" class="dropdown-item">Cart</a>
+                                            </li>
+                                            <li>
+                                                <a href="/Order/MyOrders" class="dropdown-item">My Orders</a>
+                                            </li>
+                                        }
+
+
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a href="/Account/Login" class="dropdown-item">Cart</a>
+                                        </li>
+                                        <li>
+                                            <a href="Account/Login" class="dropdown-item">My Orders</a>
+                                    </li>}
+
                                 </ul>
                             </li>
                             <li class="nav-item">
@@ -205,20 +251,57 @@
                                                 </svg>
                                             </a>
                                         </li>
-                                        <li class="pe-3">
-                                            <a href="/Account/Login">
-                                                <svg class="user">
-                                                    <use xlink:href="#user"></use>
-                                                </svg>
-                                            </a>
-                                        </li>
+                                        
+                                        @if (User.Identity.IsAuthenticated)
+                                        { if (User.IsInRole("Customer"))
+                                            {
+                                                <li class="pe-3">
+                                                    <a href="/profile/profile">
+                                                        <svg class="user">
+                                                            <use xlink:href="#user"></use>
+                                                        </svg>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/ShoppingCart/showCart">
+                                                        <svg class="cart">
+                                                            <use xlink:href="#cart"></use>
+                                                        </svg>
+                                                    </a>
+                                                </li>
+                                                
+                                            }
+                                            else
+                                            {
+                                               
+                                                <li class="pe-3">
+                                                    <a href="/profile/profile">
+                                                        <svg class="user">
+                                                            <use xlink:href="#user"></use>
+                                                        </svg>
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li class="pe-3">
+                                                <a href="/Account/Login">
+                                                    <svg class="user">
+                                                        <use xlink:href="#user"></use>
+                                                    </svg>
+                                                </a>
+                                            </li>
                                         <li>
-                                            <a href="cart.html">
-                                                <svg class="cart">
+                                            <a href="#" >
+                                                <svg class="cart" onclick="alert('Please Login to show cart')">
                                                     <use xlink:href="#cart"></use>
                                                 </svg>
                                             </a>
-                                        </li>
+                                            </li>
+                                       
+                                        }
+                                        
                                     </ul>
                                 </div>
                             </li>
@@ -235,14 +318,16 @@
                     <div class="container">
                         <div class="row d-flex align-items-center">
                             <div class="col-md-6">
-                                <div class="banner-content">
-                                    <h1 class="display-2 text-uppercase text-dark pb-5">Your Products Are Great.</h1>
-                                    <a href="shop.html" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
+                                <div class="banner-content" >
+                                    <h1 class="display-2 text-uppercase text-dark pb-5">
+                                        Find what you love
+                                    </h1>
+                                    <a href="/product/showall" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
                                 </div>
                             </div>
                             <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="/Images/banner-image.png" alt="banner">
+                                <div class="image-holder"  style="margin-top:40px;margin-left:-40px;" >
+                                    <img src="/Images/smartphone_cyan_resized_smaller_centered (1).png" alt="banner">
                                 </div>
                             </div>
                         </div>
@@ -253,13 +338,13 @@
                         <div class="row d-flex flex-wrap align-items-center">
                             <div class="col-md-6">
                                 <div class="banner-content">
-                                    <h1 class="display-2 text-uppercase text-dark pb-5">Technology Hack You Won't Get</h1>
-                                    <a href="shop.html" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
+                                    <h1 class="display-2 text-uppercase text-dark pb-5">Love what you buy</h1>
+                                    <a href="/product/showall" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
                                 </div>
                             </div>
                             <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="/Images/banner-image.png" alt="banner">
+                                <div class="image-holder" style="margin-left:-120px;">
+                                    <img src="/Images/resized_smartwatch_657x677_moved_down_adjusted (1).png" alt="banner">
                                 </div>
                             </div>
                         </div>
@@ -342,108 +427,21 @@
                 <div class="display-header d-flex justify-content-between pb-3">
                     <h2 class="display-7 text-dark text-uppercase">Mobile Products</h2>
                     <div class="btn-right">
-                        <a href="shop.html" class="btn btn-medium btn-normal text-uppercase">Go to Shop</a>
+                        <a href="/product/showall" class="btn btn-medium btn-normal text-uppercase">Go to Shop</a>
                     </div>
                 </div>
                 <div class="swiper product-swiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="product-card position-relative">
-                                <div class="image-holder">
-                                    <img src="/Images/product-item1.jpg" alt="product-item" class="img-fluid">
-                                </div>
-                                <div class="cart-concern position-absolute">
-                                    <div class="cart-button d-flex">
-                                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                                    </div>
-                                </div>
-                                <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                                    <h3 class="card-title text-uppercase">
-                                        <a href="#">Iphone 10</a>
-                                    </h3>
-                                    <span class="item-price text-primary">$980</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-card position-relative">
-                                <div class="image-holder">
-                                    <img src="/Images/product-item2.jpg" alt="product-item" class="img-fluid">
-                                </div>
-                                <div class="cart-concern position-absolute">
-                                    <div class="cart-button d-flex">
-                                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                                    </div>
-                                </div>
-                                <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                                    <h3 class="card-title text-uppercase">
-                                        <a href="#">Iphone 11</a>
-                                    </h3>
-                                    <span class="item-price text-primary">$1100</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-card position-relative">
-                                <div class="image-holder">
-                                    <img src="/Images/product-item3.jpg" alt="product-item" class="img-fluid">
-                                </div>
-                                <div class="cart-concern position-absolute">
-                                    <div class="cart-button d-flex">
-                                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                                    </div>
-                                </div>
-                                <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                                    <h3 class="card-title text-uppercase">
-                                        <a href="#">Iphone 8</a>
-                                    </h3>
-                                    <span class="item-price text-primary">$780</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-card position-relative">
-                                <div class="image-holder">
-                                    <img src="/Images/product-item4.jpg" alt="product-item" class="img-fluid">
-                                </div>
-                                <div class="cart-concern position-absolute">
-                                    <div class="cart-button d-flex">
-                                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                                    </div>
-                                </div>
-                                <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                                    <h3 class="card-title text-uppercase">
-                                        <a href="#">Iphone 13</a>
-                                    </h3>
-                                    <span class="item-price text-primary">$1500</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-card position-relative">
-                                <div class="image-holder">
-                                    <img src="/Images/product-item5.jpg" alt="product-item" class="img-fluid">
-                                </div>
-                                <div class="cart-concern position-absolute">
-                                    <div class="cart-button d-flex">
-                                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                                    </div>
-                                </div>
-                                <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                                    <h3 class="card-title text-uppercase">
-                                        <a href="#">Iphone 12</a>
-                                    </h3>
-                                    <span class="item-price text-primary">$1300</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                        @await Component.InvokeAsync("ProductSlider")
+                    </div>      
+                 </div>
             </div>
-        </div>
+        </div>                       
         <div class="swiper-pagination position-absolute text-center"></div>
-        @RenderBody()
     </section>
+ 
+    @RenderBody()
     <section id="smart-watches" class="product-store padding-large position-relative">
         <div class="container">
             <div class="row">
@@ -455,98 +453,10 @@
                 </div>
                 <div class="swiper product-watch-swiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="product-card position-relative">
-                                <div class="image-holder">
-                                    <img src="/Images/product-item6.jpg" alt="product-item" class="img-fluid">
-                                </div>
-                                <div class="cart-concern position-absolute">
-                                    <div class="cart-button d-flex">
-                                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                                    </div>
-                                </div>
-                                <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                                    <h3 class="card-title text-uppercase">
-                                        <a href="#">Pink watch</a>
-                                    </h3>
-                                    <span class="item-price text-primary">$870</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-card position-relative">
-                                <div class="image-holder">
-                                    <img src="/Images/product-item7.jpg" alt="product-item" class="img-fluid">
-                                </div>
-                                <div class="cart-concern position-absolute">
-                                    <div class="cart-button d-flex">
-                                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                                    </div>
-                                </div>
-                                <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                                    <h3 class="card-title text-uppercase">
-                                        <a href="#">Heavy watch</a>
-                                    </h3>
-                                    <span class="item-price text-primary">$680</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-card position-relative">
-                                <div class="image-holder">
-                                    <img src="/Images/product-item8.jpg" alt="product-item" class="img-fluid">
-                                </div>
-                                <div class="cart-concern position-absolute">
-                                    <div class="cart-button d-flex">
-                                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                                    </div>
-                                </div>
-                                <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                                    <h3 class="card-title text-uppercase">
-                                        <a href="#">spotted watch</a>
-                                    </h3>
-                                    <span class="item-price text-primary">$750</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-card position-relative">
-                                <div class="image-holder">
-                                    <img src="/Images/product-item9.jpg" alt="product-item" class="img-fluid">
-                                </div>
-                                <div class="cart-concern position-absolute">
-                                    <div class="cart-button d-flex">
-                                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                                    </div>
-                                </div>
-                                <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                                    <h3 class="card-title text-uppercase">
-                                        <a href="#">black watch</a>
-                                    </h3>
-                                    <span class="item-price text-primary">$650</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="product-card position-relative">
-                                <div class="image-holder">
-                                    <img src="/Images/product-item10.jpg" alt="product-item" class="img-fluid">
-                                </div>
-                                <div class="cart-concern position-absolute">
-                                    <div class="cart-button d-flex">
-                                        <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                                    </div>
-                                </div>
-                                <div class="card-detail d-flex justify-content-between pt-3">
-                                    <h3 class="card-title text-uppercase">
-                                        <a href="#">black watch</a>
-                                    </h3>
-                                    <span class="item-price text-primary">$750</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        @await Component.InvokeAsync("WatchesSlider")
                 </div>
+                </div>
+
             </div>
         </div>
         <div class="swiper-pagination position-absolute text-center"></div>
@@ -932,10 +842,26 @@
             </div>
         </div>
     </div>
-    <script src="/js/jquery-1.11.0.min.js"></script>
+    <script src="/js/jquery-1.11.0.min.js">
+       </script>
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="/js/plugins.js"></script>
     <script type="text/javascript" src="/js/script.js"></script>
+   
+        <script>
+            var swiper = new Swiper('.main-swiper', {
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false
+                },
+                navigation: {
+                    nextEl: '.swiper-arrow-next',
+                    prevEl: '.swiper-arrow-prev'
+                }
+            });
+        </script>
+    
 </body>
 </html>

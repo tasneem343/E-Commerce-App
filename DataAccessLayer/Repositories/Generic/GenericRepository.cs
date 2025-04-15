@@ -14,7 +14,7 @@ namespace DataAccessLayer.Repositories.Generic
             _context = context;
             _dbSet = context.Set<T>();
         }
-
+       
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
@@ -33,6 +33,7 @@ namespace DataAccessLayer.Repositories.Generic
         public async Task UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
+            _context.SaveChanges();
         }
 
         public async Task DeleteAsync(int id)

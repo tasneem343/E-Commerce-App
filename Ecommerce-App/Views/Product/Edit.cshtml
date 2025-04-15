@@ -1,0 +1,60 @@
+﻿@using Ecommerce_App.ActionRequests
+@model UpdateProductsActionRequest
+
+@{
+    Layout = "RegisterLayout";
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="container my-5">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="max-width: 850px; margin: auto; background-color: #e8f0fe;">
+        <div class="card-body p-5">
+            <h2 class="text-center mb-4 text-primary fw-bold border-bottom pb-3">✏️ Edit Product</h2>
+
+            <form asp-action="SaveEdit" asp-controller="Product" method="post" asp-route-id="@Model.ProductId">
+                <input type="hidden" asp-for="ProductId" />
+
+                <!-- Product Name -->
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="form-label fw-semibold">Product Name</label>
+                    <input asp-for="Name" class="form-control rounded-3" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="form-label fw-semibold">Description</label>
+                    <textarea asp-for="Description" class="form-control rounded-3" rows="4">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <!-- Price -->
+                <div class="form-group mb-3">
+                    <label asp-for="Price" class="form-label fw-semibold">💲 Price (USD)</label>
+                    <input asp-for="Price" class="form-control rounded-3" />
+                    <span asp-validation-for="Price" class="text-danger small"></span>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group mb-3">
+                    <label class="form-label fw-semibold">📂 Category</label>
+                    <div class="form-control-plaintext text-dark ps-2">@Model.CategoryName</div>
+                    <input type="hidden" asp-for="CategoryId" />
+                </div>
+
+                <!-- Stock -->
+                <div class="form-group mb-4">
+                    <label asp-for="Stock" class="form-label fw-semibold">📦 Stock</label>
+                    <input asp-for="Stock" class="form-control rounded-3" />
+                    <span asp-validation-for="Stock" class="text-danger small"></span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success px-4 rounded-pill fw-semibold">💾 Save</button>
+                    <a asp-action="ShowALL" asp-controller="Product" class="btn btn-secondary px-4 rounded-pill fw-semibold">↩ Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

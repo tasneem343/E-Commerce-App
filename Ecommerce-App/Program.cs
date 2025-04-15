@@ -1,9 +1,14 @@
+using BusinessLogicLayer.Contracts;
+using BusinessLogicLayer.Managers;
+using BusinessLogicLayer.Services;
 using DataAccessLayer.Context;
 using DataAccessLayer.Entities;
+using DataAccessLayer.Repositories.Generic;
 using DataAccessLayer.Repositories.IUnitWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Stripe;
 
 namespace Ecommerce_App
 {
@@ -32,13 +37,26 @@ namespace Ecommerce_App
                 option.Password.RequireDigit = false;
                 option.Password.RequireUppercase = false;
             }
-             ).AddEntityFrameworkStores<ApplicationDbContext>();
+             ).AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddRoles<IdentityRole>()  // ===> enable role based authorization
+            .AddDefaultTokenProviders();
 
             // Add UnitOfWork and Repository pattern
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IProductManager, ProductManager>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+
+            builder.Services.AddScoped<IFileservice, FileServices>();
+            builder.Services.AddScoped<ICategoryManager,CategoryManager>();
+            builder.Services.AddScoped<IShoppingCartManager,ShoppingCartManager>();
+            builder.Services.AddScoped<IOrderManager, OrderManager>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+
 
             builder.Services.AddControllersWithViews(); 
-        
+            
 
         var app = builder.Build();
 
@@ -49,7 +67,7 @@ namespace Ecommerce_App
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            StripeConfiguration.ApiKey = app.Configuration["Stripe:SecretKey"];
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

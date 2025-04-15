@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Entities;
 using Ecommerce_App.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -33,8 +34,13 @@ namespace Ecommerce_App.Controllers
             {
                 ApplicationUser user = new ApplicationUser();
                 user.UserName = register.UserName;
+                user.FullName = register.FirstName+" "+register.LastName;
                 user.Email = register.Email;
                 user.PasswordHash = register.Password;
+                user.Address = register.Address;
+                user.UserType = register.UserType;
+                
+                
                 
 
                 //save database
@@ -45,17 +51,28 @@ namespace Ecommerce_App.Controllers
                 //cookie
                 if (result.Succeeded)
                 {
+                    IdentityResult roleResult;
                     //assign role 
-                    var roleResult = await Manager.AddToRoleAsync(user, "Admin");
+                    if (user.UserType == "Customer")
+                    {
+                         roleResult = await Manager.AddToRoleAsync(user, "Customer");
+                    }
+                    else 
+                    {
+                         roleResult = await Manager.AddToRoleAsync(user, "Buyer");
+
+
+                        
+                    }
                     if (roleResult.Succeeded)
-                    {
-                        await SignInManager.SignInAsync(user, false);
-                        return RedirectToAction("SignOut");
-                    }
-                    foreach (var error in roleResult.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
+                        {
+                            await SignInManager.SignInAsync(user, false);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        foreach (var error in roleResult.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
                 }
                 foreach (var error in result.Errors)
                 {
@@ -70,10 +87,10 @@ namespace Ecommerce_App.Controllers
         {
             return View("Login");
         }
-
+        
+        
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveLogin(LoginUserViewModel userViewModel)
         {
             if (ModelState.IsValid == true)
@@ -88,10 +105,12 @@ namespace Ecommerce_App.Controllers
                     if (found == true)
                     {
                         List<Claim> Claims = new List<Claim>();
-                        Claims.Add(new Claim("UserAddress", appUser.Address));
-                        Claims.Add(new Claim("Email", appUser.Email));
-                        Claims.Add(new Claim("UserType", appUser.UserType));
+                        if(appUser.Email != null)
+                            Claims.Add(new Claim("Email", appUser.Email));
                         Claims.Add(new Claim("FullName", appUser.FullName));
+                        Claims.Add(new Claim("Address", appUser.Address));
+                        Claims.Add(new Claim("UserType", appUser.UserType));
+
 
                         await SignInManager.SignInWithClaimsAsync(appUser, userViewModel.RememberMe, Claims);
                         return RedirectToAction("Index", "Home");
@@ -104,7 +123,7 @@ namespace Ecommerce_App.Controllers
             return View("Login", userViewModel);
         }
 
-        public async Task<IActionResult> SignOut()
+        public async Task<IActionResult> Signout()
         {
             await SignInManager.SignOutAsync();
             return View("Login");
